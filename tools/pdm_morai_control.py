@@ -34,13 +34,41 @@ from pdm_morai.morai_tcp import (
     MoraiTcpError,
 )
 from pdm_morai.morai_udp import MoraiUdpClient, pack_control
-from pdm_morai.pdm_config import PdmLiteMoraiConfig
+from pdm_morai.pdm_config import (
+    PDM_PROFILE_CHOICES,
+    PdmLiteMoraiConfig,
+    apply_pdm_profile,
+    pdm_profile_target_speed_scale,
+)
 from pdm_morai.pdm_controller import PdmLeadingVehicle, PdmMoraiController
 from pdm_morai.scenario import DEFAULT_TARGET_SPEED_MPS, load_scenario
 
 
 class ScenarioBoundaryDetected(RuntimeError):
     pass
+
+
+class FixedAckUdpWaitTimeout(RuntimeError):
+    pass
+
+
+class ActiveScenarioChanged(RuntimeError):
+    def __init__(
+        self,
+        previous_name: str,
+        active_name: str,
+        active_status: dict[str, Any],
+        scenario_status: dict[str, Any],
+    ):
+        self.previous_name = previous_name
+        self.active_name = active_name
+        self.active_status = active_status
+        self.scenario_status = scenario_status
+        super().__init__(
+            "SIM active scenario changed: "
+            f"{previous_name!r} -> {active_name!r}; "
+            f"scenario_status={scenario_status}"
+        )
 
 
 DEFAULT_ATTACH_RX_IP = "127.0.0.1"
@@ -83,12 +111,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--control-mode",
-        choices=[
-            "variable-udp",
-            "fixed-auto-udp",
-            "fixed-udp",
-            "fixed-tcp-lockstep",
-        ],
+        choices=["variable-udp", "fixed-udp", "fixed-tcp-lockstep"],
         default="variable-udp",
         help=(
             "Runtime control behavior. GUI/headless are not control modes."
@@ -117,6 +140,15 @@ def build_parser() -> argparse.ArgumentParser:
         help="Stop after this many timestamp-driven Ego control steps; 0 disables the limit.",
     )
     parser.add_argument("--target-speed", type=float, default=None, help="Override target speed in m/s")
+    parser.add_argument(
+        "--pdm-profile",
+        choices=PDM_PROFILE_CHOICES,
+        default="normal",
+        help=(
+            "PDM behavior preset. normal is the current baseline; mad-max is aggressive; "
+            "beginner is slow/overcautious; idiot intentionally reacts late."
+        ),
+    )
     parser.add_argument("--ego-id", default=None, help="Override logical ego id")
     parser.add_argument("--entity-ids", default=None, help="Comma-separated logical ids for received Vehicle Info records")
     parser.add_argument("--rx-ip", default=None, help="Override Vehicle Info receive IP")
@@ -241,8 +273,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--scenario-transition-wait",
         type=float,
-        default=5.0,
-        help="Seconds to wait before playing the next scenario when --auto-next-scenario is enabled.",
+        default=3.0,
+        help=(
+            "Seconds to hold control/FixedStep while a SIM-owned scenario "
+            "transition settles, or before runner-owned --auto-next-scenario play."
+        ),
     )
     parser.add_argument("--status-hz", type=float, default=2.0)
     parser.add_argument(
@@ -254,6 +289,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--route-points", type=int, default=360)
     parser.add_argument("--rebuild-distance", type=float, default=8.0)
     parser.add_argument("--route-max-error", type=float, default=6.0)
+    parser.add_argument(
+        "--route-from-runtime-pose",
+        action="store_true",
+        help=(
+            "Build the MGeo route from the first runtime Ego VehicleInfo pose, "
+            "even when a suite/xosc start pose is available."
+        ),
+    )
     parser.add_argument(
         "--mgeo-dir",
         default=str(DEFAULT_ATTACH_MGEO_DIR),
@@ -322,11 +365,6 @@ def normalize_runtime_modes(
     if args.control_mode == "variable-udp":
         args.fixed_step = False
         args.fixed_control_transport = "udp"
-    elif args.control_mode == "fixed-auto-udp":
-        args.fixed_step = False
-        args.fixed_control_transport = "udp"
-        args.rtf = 1
-        args.user_control = 0
     elif args.control_mode == "fixed-udp":
         args.fixed_step = True
         args.fixed_control_transport = "udp"
@@ -344,10 +382,6 @@ def parse_runtime_args(argv: list[str] | None = None) -> argparse.Namespace:
         control_mode_explicit=_option_present(argv, "--control-mode"),
     )
     return args
-
-
-def uses_fixed_time_mode(args: argparse.Namespace) -> bool:
-    return args.fixed_step or args.control_mode != "variable-udp"
 
 
 @dataclass(frozen=True)
@@ -815,7 +849,7 @@ def send_ego_control(
         if tcp is None:
             raise MoraiTcpError("TCP control transport requires an active TCP connection")
         result = tcp.manual_control_by_id(ego_id, control)
-        if result.get("result_code", 0) != 0:
+        if result.get("result_code") != 0:
             raise MoraiTcpError(f"ManualControlById failed: {result}")
         return result
     udp.send_control(control)
@@ -826,7 +860,7 @@ def is_new_state_sample(
     state,
     last_processed_stamp: tuple[int, int] | None,
 ) -> bool:
-    return last_processed_stamp is None or state_stamp(state) != last_processed_stamp
+    return last_processed_stamp is None or state_stamp(state) > last_processed_stamp
 
 
 def format_stamp(stamp: tuple[int, int] | None) -> str:
@@ -1101,6 +1135,12 @@ def verify_suite_preflight(
             )
             return False
     if args.control_mode != "variable-udp" and scenario_state_allows_next(scenario_status):
+        if args.scenario_play:
+            print(
+                "suite_preflight: scenario Play was acknowledged but state is still "
+                f"stopped/completed; allowing FixedStep bootstrap status={scenario_status}"
+            )
+            return True
         print(
             "ERROR: suite preflight failed: scenario is stopped/completed "
             f"status={scenario_status}"
@@ -1147,7 +1187,7 @@ def wait_for_udp_ready(
                         f"warmup_steps={fixed_steps}"
                     )
                     return True
-            elif stamp != first_stamp:
+            elif stamp > first_stamp:
                 print(
                     "udp_ready: "
                     f"stamp={format_stamp(first_stamp)}->{format_stamp(stamp)} "
@@ -1197,23 +1237,116 @@ def fixed_step_and_wait_for_ego(
     status_period: float,
     save_data_each_step: bool,
     ego_candidates: tuple[str, ...],
+    expected_scenario_name: str | None = None,
 ) -> tuple[object, dict[str, int], dict[str, int] | None]:
-    fixed_result = tcp.fixed_step(1)
-    save_result = tcp.save_data() if save_data_each_step else None
+    def recover_after_tcp_failure(operation: str, exc: Exception) -> None:
+        if not expected_scenario_name:
+            raise MoraiTcpError(f"{operation} failed: {exc}") from exc
+        print(
+            "scenario_transition_tcp_recovery: "
+            f"operation={operation} expected={expected_scenario_name!r} error={exc}"
+        )
+        try:
+            tcp.close()
+            tcp.open()
+            active_status = tcp.active_suite_status()
+            scenario_status = tcp.scenario_status()
+        except (OSError, MoraiTcpError) as recovery_exc:
+            raise MoraiTcpError(
+                f"{operation} failed and TCP transition recovery failed: {recovery_exc}"
+            ) from recovery_exc
+        if active_status.get("result_code") != 0:
+            raise MoraiTcpError(
+                f"{operation} failed; recovery ActiveSuiteStatus failed: {active_status}"
+            ) from exc
+        if scenario_status.get("result_code") != 0:
+            raise MoraiTcpError(
+                f"{operation} failed; recovery ScenarioStatus failed: {scenario_status}"
+            ) from exc
+        active_name = str(
+            active_status.get("active_scenario_name") or ""
+        ).strip()
+        print(
+            "scenario_transition_tcp_recovery_status: "
+            f"operation={operation} active_scenario={active_name or '-'} "
+            f"scenario_status={scenario_status}"
+        )
+        if active_name and active_name != expected_scenario_name:
+            raise ActiveScenarioChanged(
+                expected_scenario_name,
+                active_name,
+                active_status,
+                scenario_status,
+            ) from exc
+        if scenario_state_allows_next(scenario_status):
+            raise ScenarioBoundaryDetected(
+                f"{operation} failed at scenario boundary: "
+                f"expected={expected_scenario_name!r} status={scenario_status}"
+            ) from exc
+        raise MoraiTcpError(
+            f"{operation} failed while active scenario remained "
+            f"{expected_scenario_name!r}: {exc}"
+        ) from exc
+
     try:
-        scenario_status = tcp.scenario_status()
-    except MoraiTcpError as exc:
-        print(f"fixed_step_scenario_status warning: {exc}")
-        scenario_status = {}
-    else:
-        print(f"fixed_step_ack: fixed={fixed_result} scenario_status={scenario_status}")
+        fixed_result = tcp.fixed_step(1)
+    except (OSError, MoraiTcpError) as exc:
+        recover_after_tcp_failure("FixedStep(1)", exc)
+        raise AssertionError("unreachable")
+    if fixed_result.get("result_code") != 0:
+        raise MoraiTcpError(f"FixedStep(1) failed: {fixed_result}")
+    try:
+        save_result = tcp.save_data() if save_data_each_step else None
+    except (OSError, MoraiTcpError) as exc:
+        recover_after_tcp_failure("SaveData", exc)
+        raise AssertionError("unreachable")
+    def check_scenario_progress(phase: str) -> None:
+        try:
+            active_status = tcp.active_suite_status() if expected_scenario_name else None
+        except (OSError, MoraiTcpError) as exc:
+            recover_after_tcp_failure("ActiveSuiteStatus", exc)
+            raise AssertionError("unreachable")
+        if active_status is not None and active_status.get("result_code") != 0:
+            raise MoraiTcpError(f"ActiveSuiteStatus failed: {active_status}")
+        try:
+            scenario_status = tcp.scenario_status()
+        except (OSError, MoraiTcpError) as exc:
+            recover_after_tcp_failure("ScenarioStatus", exc)
+            raise AssertionError("unreachable")
+        if scenario_status.get("result_code") != 0:
+            raise MoraiTcpError(f"ScenarioStatus failed: {scenario_status}")
+        active_name = (
+            str(active_status.get("active_scenario_name") or "").strip()
+            if active_status is not None
+            else ""
+        )
+        print(
+            f"fixed_step_{phase}: "
+            f"fixed={fixed_result} active_scenario={active_name or '-'} "
+            f"scenario_status={scenario_status}"
+        )
+        if (
+            expected_scenario_name
+            and active_name
+            and active_name != expected_scenario_name
+        ):
+            raise ActiveScenarioChanged(
+                expected_scenario_name,
+                active_name,
+                active_status or {},
+                scenario_status,
+            )
         if scenario_state_allows_next(scenario_status):
             raise ScenarioBoundaryDetected(
                 "scenario boundary after FixedStep ACK: "
-                f"status={scenario_status} fixed={fixed_result} save={save_result}"
+                f"expected={expected_scenario_name!r} status={scenario_status} "
+                f"fixed={fixed_result} save={save_result}"
             )
-    deadline = None if timeout <= 0 else time.monotonic() + timeout
-    next_status = 0.0
+
+    check_scenario_progress("ack")
+    wait_started = time.monotonic()
+    deadline = None if timeout <= 0 else wait_started + timeout
+    next_status = wait_started + status_period
     polls = 0
 
     while True:
@@ -1222,20 +1355,11 @@ def fixed_step_and_wait_for_ego(
         polls += 1
         ego = resolve_runtime_ego(udp, ego_candidates)
         current_stamp = state_stamp(ego) if ego is not None else None
-        if ego is not None and (previous_stamp is None or current_stamp != previous_stamp):
+        if ego is not None and (previous_stamp is None or current_stamp > previous_stamp):
             return ego, fixed_result, save_result
 
-        if deadline is not None and now >= deadline:
-            reason = "ego state not received" if ego is None else "ego timestamp did not advance"
-            raise RuntimeError(
-                "fixed_ack_udp_wait_timeout after FixedStep(1): "
-                f"{reason}; previous={format_stamp(previous_stamp)} "
-                f"current={format_stamp(current_stamp)} rx={udp.rx_records} "
-                f"chunks={udp.rx_chunks} invalid={udp.invalid_packets} "
-                f"polls={polls} fixed={fixed_result} save={save_result}"
-            )
-
         if now >= next_status:
+            check_scenario_progress("state_wait")
             print(
                 "fixed_step_state_wait: "
                 f"previous={format_stamp(previous_stamp)} "
@@ -1244,7 +1368,167 @@ def fixed_step_and_wait_for_ego(
                 f"invalid={udp.invalid_packets} fixed={fixed_result} save={save_result}"
             )
             next_status = now + status_period
+
+        if deadline is not None and now >= deadline:
+            check_scenario_progress("timeout")
+            reason = "ego state not received" if ego is None else "ego timestamp did not advance"
+            raise FixedAckUdpWaitTimeout(
+                "fixed_ack_udp_wait_timeout after FixedStep(1): "
+                f"{reason}; previous={format_stamp(previous_stamp)} "
+                f"current={format_stamp(current_stamp)} rx={udp.rx_records} "
+                f"chunks={udp.rx_chunks} invalid={udp.invalid_packets} "
+                f"polls={polls} fixed={fixed_result} save={save_result}"
+            )
         time.sleep(0.005)
+
+
+def bootstrap_fixed_tcp_ego(
+    *,
+    tcp: MoraiTcpClient,
+    udp: MoraiUdpClient,
+    ego_id: str,
+    timeout: float,
+    status_period: float,
+    save_data_each_step: bool,
+    ego_candidates: tuple[str, ...],
+    send_control: bool,
+    force_step: bool = False,
+    expected_scenario_name: str | None = None,
+) -> tuple[object, dict[str, int] | None, dict[str, int] | None]:
+    udp.poll()
+    ego = resolve_runtime_ego(udp, ego_candidates)
+    if ego is not None and not force_step:
+        print(
+            "udp_ready: "
+            f"stamp={format_stamp(state_stamp(ego))} "
+            f"{udp_status_text(udp, ego_candidates)} bootstrap_step=0"
+        )
+        return ego, None, None
+    if force_step:
+        udp.states.clear()
+        ego = None
+        print(
+            "scenario_transition_udp_reset: "
+            "drained cached VehicleInfo and forcing FixedStep(1) bootstrap"
+        )
+
+    print(
+        "lockstep_bootstrap: initial Ego state unavailable; "
+        f"manual_control={'deferred' if send_control else 'disabled'} "
+        "sending wake-up FixedStep(1)"
+    )
+    ego, fixed_result, save_result = fixed_step_and_wait_for_ego(
+        tcp=tcp,
+        udp=udp,
+        previous_stamp=None,
+        timeout=timeout,
+        status_period=status_period,
+        save_data_each_step=save_data_each_step,
+        ego_candidates=ego_candidates,
+        expected_scenario_name=expected_scenario_name,
+    )
+    print(
+        "lockstep_bootstrap_ready: "
+        f"stamp={format_stamp(state_stamp(ego))} fixed={fixed_result} save={save_result}"
+    )
+    return ego, fixed_result, save_result
+
+
+def hold_for_sim_scenario_transition(
+    *,
+    tcp: MoraiTcpClient,
+    udp: MoraiUdpClient,
+    previous_name: str | None,
+    timeout: float,
+    status_period: float,
+    initial_change: ActiveScenarioChanged | None = None,
+) -> ActiveScenarioChanged | None:
+    previous = str(previous_name or "").strip()
+    latest_name = initial_change.active_name if initial_change is not None else ""
+    latest_active = initial_change.active_status if initial_change is not None else {}
+    latest_scenario = initial_change.scenario_status if initial_change is not None else {}
+    hold_seconds = max(0.0, timeout)
+    started = time.monotonic()
+    deadline = started + hold_seconds
+    check_period = min(0.25, max(0.05, status_period))
+    next_check = started
+    checks = 0
+    print(
+        "scenario_transition_hold: "
+        f"previous={previous or '-'} seconds={hold_seconds:.1f} "
+        "control=hold fixed_step=hold udp_receive=replace"
+    )
+    # Discard the previous scenario's cached state before the SIM starts
+    # publishing the next scenario. Samples received during the hold belong
+    # to the replacement scenario and must remain available as its initial
+    # PDM input state.
+    udp.states.clear()
+
+    if latest_name:
+        print(
+            'scenario_transition_confirmed: '
+            f'previous={previous!r} active={latest_name!r} '
+            f'checks={checks} status={latest_scenario}'
+        )
+        return ActiveScenarioChanged(
+            previous,
+            latest_name,
+            latest_active,
+            latest_scenario,
+        )
+
+    while True:
+        udp.poll()
+        now = time.monotonic()
+        if now >= next_check or now >= deadline:
+            checks += 1
+            try:
+                active_status = tcp.active_suite_status()
+                scenario_status = tcp.scenario_status()
+            except (OSError, MoraiTcpError) as exc:
+                print(f"scenario_transition_status_retry: error={exc}")
+            else:
+                active_name = str(
+                    active_status.get("active_scenario_name") or ""
+                ).strip()
+                if active_name and active_name != previous:
+                    latest_name = active_name
+                    latest_active = active_status
+                    latest_scenario = scenario_status
+                    print(
+                        'scenario_transition_confirmed: '
+                        f'previous={previous!r} active={latest_name!r} '
+                        f'checks={checks} status={latest_scenario}'
+                    )
+                    return ActiveScenarioChanged(
+                        previous,
+                        latest_name,
+                        latest_active,
+                        latest_scenario,
+                    )
+            next_check = now + check_period
+        if now >= deadline:
+            break
+        time.sleep(min(0.02, max(0.0, deadline - now)))
+
+    udp.poll()
+    if not latest_name:
+        print(
+            "scenario_transition_not_observed: "
+            f"previous={previous or '-'} checks={checks}"
+        )
+        return None
+    print(
+        "scenario_transition_confirmed: "
+        f"previous={previous or '-'} active={latest_name!r} "
+        f"checks={checks} status={latest_scenario}"
+    )
+    return ActiveScenarioChanged(
+        previous,
+        latest_name,
+        latest_active,
+        latest_scenario,
+    )
 
 
 def select_advanced_route(scenario, ego_id: str, route_entity: str | None):
@@ -1330,6 +1614,7 @@ def variable_time_status_matches(
         status.get("mode") == TIME_MODE_VARIABLE
         and status.get("target_fps") == control_hz
         and status.get("physics_delta_time") == physics_delta_time
+        and status.get("rtf") == 0
         and status.get("user_control") == 0
     )
 
@@ -1353,11 +1638,7 @@ def resolve_sut_timing(
 
     control_hz = max(
         1,
-        (
-            int(args.fixed_target_fps)
-            if uses_fixed_time_mode(args)
-            else int(default_control_hz)
-        ),
+        int(args.fixed_target_fps) if args.fixed_step else int(default_control_hz),
     )
     return control_hz, 1.0 / float(control_hz)
 
@@ -1366,15 +1647,22 @@ def configure_fixed_step(
     tcp: MoraiTcpClient,
     args: argparse.Namespace,
     control_hz: int,
+    user_control_override: int | None = None,
+    force_reapply: bool = False,
 ) -> None:
+    requested_user_control = (
+        args.user_control
+        if user_control_override is None
+        else int(user_control_override)
+    )
     time_status_before = tcp.get_simulation_time_status()
     print(f"time_status_before={time_status_before}")
-    if fixed_time_status_matches(
+    if not force_reapply and fixed_time_status_matches(
         time_status_before,
         control_hz=control_hz,
         physics_delta_time=args.physics_delta_time,
         rtf=args.rtf,
-        user_control=args.user_control,
+        user_control=requested_user_control,
     ):
         print("set_fixed_mode=skipped (requested fixed settings already active)")
         print(f"time_status_after={time_status_before}")
@@ -1385,7 +1673,7 @@ def configure_fixed_step(
         control_hz,
         args.physics_delta_time,
         args.rtf,
-        args.user_control,
+        requested_user_control,
     )
     print(f"set_fixed_mode={set_result}")
     if set_result.get("result_code", 0) != 0:
@@ -1398,12 +1686,12 @@ def configure_fixed_step(
         control_hz=control_hz,
         physics_delta_time=args.physics_delta_time,
         rtf=args.rtf,
-        user_control=args.user_control,
+        user_control=requested_user_control,
     ):
         raise MoraiTcpError(
             "Fixed-step verification failed: "
             f"requested=(fps={control_hz}, physics_delta_time={args.physics_delta_time}, "
-            f"rtf={args.rtf}, user_control={args.user_control}), "
+            f"rtf={args.rtf}, user_control={requested_user_control}), "
             f"actual={time_status_after}"
         )
 
@@ -1424,8 +1712,7 @@ def configure_variable_mode(
         return
     if args.rtf != 0 or args.user_control != 0:
         print(
-            "variable_mode_note: TCP request uses rtf=0 and user_control=0 in variable mode; "
-            "the simulator may normalize the reported rtf value; "
+            "variable_mode_note: TCP API forces rtf=0 and user_control=0 in variable mode; "
             f"requested rtf={args.rtf} user_control={args.user_control}"
         )
     set_result = tcp.set_simulation_time_mode(
@@ -1448,7 +1735,7 @@ def configure_variable_mode(
         raise MoraiTcpError(
             "Variable-mode verification failed: "
             f"requested=(fps={control_hz}, physics_delta_time={args.physics_delta_time}, "
-            f"user_control=0; rtf ignored), actual={time_status_after}"
+            f"rtf=0, user_control=0), actual={time_status_after}"
         )
 
 
@@ -1495,7 +1782,8 @@ def main(argv: list[str] | None = None) -> int:
     rx_port = settings.rx_port
     tx_ip = settings.tx_ip
     tx_port = settings.tx_port
-    target_speed = settings.target_speed
+    base_target_speed = settings.target_speed
+    target_speed = base_target_speed
     if args.manual_test:
         return run_manual_test(args, tx_ip, tx_port, settings.control_hz)
     will_run_control = not (
@@ -1505,10 +1793,8 @@ def main(argv: list[str] | None = None) -> int:
         or args.scenario_control_only is not None
     )
     needs_tcp_management = (
-        will_run_control
-        or args.plan_only
+        args.plan_only
         or args.check_suite
-        or args.check_udp
         or args.fixed_step
         or args.load_suite
         or args.scenario_play
@@ -1537,11 +1823,30 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: {exc}")
         return 2
     config = PdmLiteMoraiConfig(fps=float(control_hz), time_step=time_step)
+    try:
+        apply_pdm_profile(config, args.pdm_profile)
+        target_speed = base_target_speed * pdm_profile_target_speed_scale(args.pdm_profile)
+    except ValueError as exc:
+        print(f"ERROR: {exc}")
+        return 2
     print(
         "timing_config: "
         f"pdm_step_delta_ms={config.time_step * 1000.0:.6g} "
         f"pdm_target_fps={control_hz} "
         f"sim_physics_delta_ms={args.physics_delta_time}"
+    )
+    print(
+        "pdm_profile: "
+        f"name={args.pdm_profile} "
+        f"base_target={base_target_speed:.3f}mps "
+        f"effective_target={target_speed:.3f}mps "
+        f"gap={config.leading_vehicle_min_gap:.2f}m/"
+        f"{config.leading_vehicle_time_gap:.2f}s "
+        f"lead_window={config.leading_vehicle_lateral_window:.2f}m "
+        f"emergency_ttc={config.leading_vehicle_emergency_ttc:.2f}s "
+        f"steer_rate={config.steer_rate_limit:.2f} "
+        f"throttle_rate={config.throttle_increase_rate:.2f} "
+        f"brake_rate={config.brake_increase_rate:.2f}"
     )
 
     if args.plan_only:
@@ -1580,7 +1885,7 @@ def main(argv: list[str] | None = None) -> int:
                 fixed_step=False,
                 save_data_each_step=False,
                 max_fixed_steps=0,
-                require_stamp_advance=True,
+                require_stamp_advance=args.control_mode != "fixed-tcp-lockstep",
                 ego_candidates=ego_candidates,
             )
             active_status, scenario_status, time_status = read_tcp_preflight(tcp)
@@ -1648,7 +1953,7 @@ def main(argv: list[str] | None = None) -> int:
     route_from_advanced = False
     route_initialized = False
     route_source = "pending runtime Ego pose"
-    if scenario is not None:
+    if scenario is not None and not args.route_from_runtime_pose:
         start_pose = scenario.start_pose
         if start_pose is None:
             print("ERROR: Ego start pose was not found in xosc.")
@@ -1707,9 +2012,10 @@ def main(argv: list[str] | None = None) -> int:
     play_gate_stamp: tuple[int, int] | None = None
     play_gate_released = not args.hold_until_play
     last_processed_stamp: tuple[int, int] | None = None
+    lockstep_ego = None
     duplicate_state_polls = 0
-    bootstrap_fixed_step_sent = False
     lockstep_wait_started: float | None = None
+    transition_save_data_required = False
     control_steps = 0
     control_started = False
     trace_log = RuntimeTraceLog(None)
@@ -1718,10 +2024,128 @@ def main(argv: list[str] | None = None) -> int:
         or (binding.scenario_path.stem if binding is not None and binding.scenario_path is not None else None)
     )
 
-    def switch_to_next_scenario(tcp_client: MoraiTcpClient, reason: Exception) -> bool:
+    def reset_scenario_runtime(
+        scenario_name: str,
+        *,
+        preserve_udp_state: bool = False,
+    ) -> None:
         nonlocal current_scenario_name, route_initialized, route_from_advanced, route_source
-        nonlocal last_processed_stamp, duplicate_state_polls, bootstrap_fixed_step_sent
-        nonlocal lockstep_wait_started, play_gate_stamp, play_gate_released
+        nonlocal last_processed_stamp, lockstep_ego, duplicate_state_polls
+        nonlocal lockstep_wait_started, play_gate_stamp, play_gate_released, controller
+
+        current_scenario_name = scenario_name
+        route_initialized = False
+        route_from_advanced = False
+        route_source = "pending runtime Ego pose"
+        route.current_links = []
+        route.current_link_ids = []
+        route.route_points = np.empty((0, 3), dtype=float)
+        route.route_s = np.empty((0,), dtype=float)
+        controller = PdmMoraiController(target_speed=target_speed, config=config)
+        if not preserve_udp_state:
+            udp.states.clear()
+        last_processed_stamp = None
+        lockstep_ego = None
+        duplicate_state_polls = 0
+        lockstep_wait_started = None
+        play_gate_stamp = None
+        play_gate_released = not args.hold_until_play
+
+    def adopt_sim_scenario(
+        tcp_client: MoraiTcpClient,
+        change: ActiveScenarioChanged,
+    ) -> bool:
+        nonlocal lockstep_ego, transition_save_data_required
+
+        print(
+            "scenario_transition_detected: "
+            f"owner=sim previous={change.previous_name!r} "
+            f"active={change.active_name!r} "
+            f"status={change.scenario_status}"
+        )
+        clock_reset_deadline = time.monotonic() + max(
+            args.scenario_transition_wait,
+            args.lockstep_state_timeout,
+        )
+        previous_stamp = last_processed_stamp
+        clock_status = None
+        while time.monotonic() < clock_reset_deadline:
+            udp.poll()
+            clock_status = tcp_client.get_simulation_time_status()
+            clock_stamp = (
+                int(clock_status.get('seconds', 0)),
+                int(clock_status.get('nanos', 0)),
+            )
+            clock_step_index = int(clock_status.get('step_index', -1))
+            if (
+                clock_step_index == 0
+                and (previous_stamp is None or clock_stamp < previous_stamp)
+            ):
+                break
+            time.sleep(0.05)
+        else:
+            raise FixedAckUdpWaitTimeout(
+                'fixed_ack_udp_wait_timeout waiting for scenario clock reset: '
+                f'previous={format_stamp(previous_stamp)} current={clock_status}'
+            )
+        print(
+            'scenario_transition_clock_reset: '
+            f'previous={format_stamp(previous_stamp)} current={format_stamp(clock_stamp)} '
+            f'step_index={clock_step_index}'
+        )
+        reset_scenario_runtime(change.active_name)
+        settle_deadline = time.monotonic() + max(0.0, args.scenario_transition_wait)
+        while time.monotonic() < settle_deadline:
+            udp.poll()
+            time.sleep(min(0.02, max(0.0, settle_deadline - time.monotonic())))
+        print(
+            "scenario_transition_sender_wakeup: "
+            "rearming Variable->Fixed and enabling transition SaveData flush"
+        )
+        transition_save_data_required = True
+        variable_result = tcp_client.set_simulation_time_mode(
+            TIME_MODE_VARIABLE,
+            control_hz,
+            args.physics_delta_time,
+            0,
+            0,
+        )
+        if variable_result.get("result_code", 0) != 0:
+            raise MoraiTcpError(
+                f"Scenario transition Variable rearm failed: {variable_result}"
+            )
+        configure_fixed_step(
+            tcp_client,
+            args,
+            control_hz,
+            force_reapply=True,
+        )
+        lockstep_ego, _fixed_result, _save_result = bootstrap_fixed_tcp_ego(
+            tcp=tcp_client,
+            udp=udp,
+            ego_id=ego_id,
+            timeout=args.lockstep_state_timeout,
+            status_period=status_period,
+            save_data_each_step=True,
+            ego_candidates=ego_candidates,
+            send_control=not args.no_send,
+            force_step=True,
+            expected_scenario_name=change.active_name,
+        )
+        print(
+            "scenario_transition_ready: "
+            f"owner=sim active={change.active_name!r} "
+            f"stamp={format_stamp(state_stamp(lockstep_ego)) if lockstep_ego is not None else '-'}"
+        )
+        return True
+
+    def switch_to_next_scenario(
+        tcp_client: MoraiTcpClient,
+        reason: Exception,
+        *,
+        wait_before_play: bool = True,
+    ) -> bool:
+        nonlocal lockstep_ego
 
         if not args.auto_next_scenario:
             return False
@@ -1738,29 +2162,52 @@ def main(argv: list[str] | None = None) -> int:
             f"current={current_scenario_name!r} next={next_name!r} "
             f"wait={args.scenario_transition_wait:.1f}s reason={reason}"
         )
-        if args.scenario_transition_wait > 0:
+        if wait_before_play and args.scenario_transition_wait > 0:
             time.sleep(args.scenario_transition_wait)
         result = tcp_client.scenario_control(SCENARIO_PLAY, next_name)
         print(f"scenario_transition_play name={next_name!r} result={result}")
         if result.get("result_code", 0) != 0:
             return False
-        current_scenario_name = next_name
-        route_initialized = False
-        route_from_advanced = False
-        route_source = "pending runtime Ego pose"
-        route.current_links = []
-        route.current_link_ids = []
-        route.route_points = np.empty((0, 3), dtype=float)
-        route.route_s = np.empty((0,), dtype=float)
-        udp.states.clear()
-        last_processed_stamp = None
-        duplicate_state_polls = 0
-        bootstrap_fixed_step_sent = False
-        lockstep_wait_started = None
-        play_gate_stamp = None
-        play_gate_released = not args.hold_until_play
+        reset_scenario_runtime(next_name)
+        if args.control_mode == "fixed-tcp-lockstep":
+            lockstep_ego, _fixed_result, _save_result = bootstrap_fixed_tcp_ego(
+                tcp=tcp_client,
+                udp=udp,
+                ego_id=ego_id,
+                timeout=args.lockstep_state_timeout,
+                status_period=status_period,
+                save_data_each_step=(
+                    args.save_data_each_step or transition_save_data_required
+                ),
+                ego_candidates=ego_candidates,
+                send_control=not args.no_send,
+                force_step=True,
+            )
         print(f"scenario_transition_ready name={next_name!r}")
         return True
+
+    def handle_scenario_event(tcp_client: MoraiTcpClient, event: Exception) -> bool:
+        transition_hold_done = False
+        if args.control_mode == "fixed-tcp-lockstep" and isinstance(
+            event,
+            (ActiveScenarioChanged, ScenarioBoundaryDetected, FixedAckUdpWaitTimeout),
+        ):
+            change = hold_for_sim_scenario_transition(
+                tcp=tcp_client,
+                udp=udp,
+                previous_name=current_scenario_name,
+                timeout=args.scenario_transition_wait,
+                status_period=status_period,
+                initial_change=event if isinstance(event, ActiveScenarioChanged) else None,
+            )
+            transition_hold_done = True
+            if change is not None:
+                return adopt_sim_scenario(tcp_client, change)
+        return switch_to_next_scenario(
+            tcp_client,
+            event,
+            wait_before_play=not transition_hold_done,
+        )
 
     print(
         f"PDM-MORAI start: rx={rx_ip}:{rx_port}, "
@@ -1819,16 +2266,54 @@ def main(argv: list[str] | None = None) -> int:
                     status_period,
                 )
                 print(f"headless_active_suite={active_status}")
-            if uses_fixed_time_mode(args):
+            play_sent = False
+            if args.control_mode == "fixed-tcp-lockstep" and args.scenario_play:
+                configure_fixed_step(
+                    tcp,
+                    args,
+                    control_hz,
+                    user_control_override=0,
+                )
+                play_name = scenario_control_name(tcp, binding, args.scenario_name)
+                play_result = tcp.scenario_control(SCENARIO_PLAY, play_name)
+                print(f"scenario_play name={play_name!r} result={play_result}")
+                if play_result.get("result_code") != 0:
+                    raise MoraiTcpError(f"Scenario Play failed: {play_result}")
+                play_sent = True
+                if not wait_for_udp_ready(
+                    udp,
+                    tcp=None,
+                    timeout=args.udp_ready_timeout,
+                    status_period=status_period,
+                    fixed_step=False,
+                    save_data_each_step=False,
+                    max_fixed_steps=0,
+                    require_stamp_advance=False,
+                    ego_candidates=ego_candidates,
+                ):
+                    raise RuntimeError(
+                        "Scenario Play succeeded but initial Ego VehicleInfo was not received "
+                        "before fixed-tcp-lockstep took ownership of the SIM clock"
+                    )
+                configure_fixed_step(tcp, args, control_hz)
+            elif args.fixed_step:
                 configure_fixed_step(tcp, args, control_hz)
             else:
                 configure_variable_mode(tcp, args, control_hz)
-            if args.scenario_play:
+            if args.scenario_play and not play_sent:
                 play_name = scenario_control_name(tcp, binding, args.scenario_name)
-                print(f"scenario_play name={play_name!r} result={tcp.scenario_control(SCENARIO_PLAY, play_name)}")
+                play_result = tcp.scenario_control(SCENARIO_PLAY, play_name)
+                print(f"scenario_play name={play_name!r} result={play_result}")
+                if play_result.get("result_code") != 0:
+                    raise MoraiTcpError(f"Scenario Play failed: {play_result}")
             if args.tcp_settle > 0:
                 time.sleep(args.tcp_settle)
             active_status, scenario_status, time_status = read_tcp_preflight(tcp)
+            active_scenario_name = str(
+                active_status.get("active_scenario_name") or ""
+            ).strip()
+            if active_scenario_name:
+                current_scenario_name = active_scenario_name
             print_preflight_status(
                 args=args,
                 active_status=active_status,
@@ -1853,13 +2338,30 @@ def main(argv: list[str] | None = None) -> int:
         udp.close()
         return 2
     try:
-        if not wait_for_udp_ready(
+        if args.control_mode == "fixed-tcp-lockstep":
+            if tcp is None:
+                raise MoraiTcpError("fixed-tcp-lockstep requires an active TCP connection")
+            lockstep_ego, _fixed_result, _save_result = bootstrap_fixed_tcp_ego(
+                tcp=tcp,
+                udp=udp,
+                ego_id=ego_id,
+                timeout=args.lockstep_state_timeout,
+                status_period=status_period,
+                save_data_each_step=(
+                    args.save_data_each_step or transition_save_data_required
+                ),
+                ego_candidates=ego_candidates,
+                send_control=not args.no_send,
+            )
+        elif not wait_for_udp_ready(
             udp,
             tcp if args.control_mode == "fixed-udp" else None,
             timeout=args.udp_ready_timeout,
             status_period=status_period,
             fixed_step=args.control_mode == "fixed-udp" and not args.hold_until_play,
-            save_data_each_step=args.save_data_each_step,
+            save_data_each_step=(
+                args.save_data_each_step or transition_save_data_required
+            ),
             max_fixed_steps=args.udp_ready_steps,
             require_stamp_advance=not args.hold_until_play,
             ego_candidates=ego_candidates,
@@ -1889,7 +2391,11 @@ def main(argv: list[str] | None = None) -> int:
 
             fixed_result = None
             save_result = None
-            udp.poll()
+            if args.control_mode == "fixed-tcp-lockstep":
+                ego = lockstep_ego
+            else:
+                udp.poll()
+                ego = resolve_runtime_ego(udp, ego_candidates)
             if udp.inferred_entity_ids is True and not inferred_mapping_reported:
                 print(
                     "runtime_id_mapping: duplicate raw ids detected; "
@@ -1897,13 +2403,13 @@ def main(argv: list[str] | None = None) -> int:
                     "metadata was not provided."
                 )
                 inferred_mapping_reported = True
-            ego = resolve_runtime_ego(udp, ego_candidates)
             if ego is None:
-                if (
-                    tcp is not None
-                    and play_gate_released
-                    and not bootstrap_fixed_step_sent
-                ):
+                if args.control_mode == "fixed-tcp-lockstep" and play_gate_released:
+                    raise RuntimeError(
+                        "fixed-tcp-lockstep requires an initial UDP Ego state "
+                        "before the first ManualControlById/FixedStep iteration"
+                    )
+                if tcp is not None and play_gate_released:
                     try:
                         ego, fixed_result, save_result = fixed_step_and_wait_for_ego(
                             tcp=tcp,
@@ -1911,33 +2417,35 @@ def main(argv: list[str] | None = None) -> int:
                             previous_stamp=None,
                             timeout=args.lockstep_state_timeout,
                             status_period=status_period,
-                            save_data_each_step=args.save_data_each_step,
+                            save_data_each_step=(
+                                args.save_data_each_step or transition_save_data_required
+                            ),
                             ego_candidates=ego_candidates,
+                            expected_scenario_name=(
+                                current_scenario_name
+                                if args.control_mode == "fixed-tcp-lockstep"
+                                else None
+                            ),
                         )
-                    except ScenarioBoundaryDetected as exc:
-                        if switch_to_next_scenario(tcp, exc):
+                    except (
+                        ScenarioBoundaryDetected,
+                        ActiveScenarioChanged,
+                        FixedAckUdpWaitTimeout,
+                    ) as exc:
+                        if handle_scenario_event(tcp, exc):
                             continue
                         raise
-                    bootstrap_fixed_step_sent = True
-                    if udp.inferred_entity_ids is True and not inferred_mapping_reported:
-                        print(
-                            "runtime_id_mapping: duplicate raw ids detected; "
-                            "using record order Ego,NPC_1.. because --suite/--entity-ids "
-                            "metadata was not provided."
-                        )
-                        inferred_mapping_reported = True
+                    if ego is not None:
+                        current_stamp = state_stamp(ego)
+                    else:
+                        continue
                 else:
                     if loop_start >= next_status:
-                        fixed_text = (
-                            f" fixed={fixed_result} save={save_result}"
-                            if fixed_result is not None
-                            else ""
-                        )
                         error_text = f" error={udp.last_error}" if udp.last_error else ""
                         print(
                             "waiting for ego state..."
                             f" rx={udp.rx_records} chunks={udp.rx_chunks} "
-                            f"invalid={udp.invalid_packets}{error_text}{fixed_text}"
+                            f"invalid={udp.invalid_packets}{error_text}"
                         )
                         next_status = loop_start + status_period
                     time.sleep(0.005 if tcp is not None else period)
@@ -1947,10 +2455,14 @@ def main(argv: list[str] | None = None) -> int:
                 continue
 
             if not play_gate_released:
+                if tcp is not None:
+                    udp.poll()
+                    ego = resolve_runtime_ego(udp, ego_candidates) or ego
+                    lockstep_ego = ego
                 current_stamp = state_stamp(ego)
                 if play_gate_stamp is None:
                     play_gate_stamp = current_stamp
-                elif current_stamp != play_gate_stamp:
+                elif current_stamp > play_gate_stamp:
                     play_gate_released = True
                     print(
                         "play_gate: released "
@@ -1971,6 +2483,12 @@ def main(argv: list[str] | None = None) -> int:
 
             current_stamp = state_stamp(ego)
             if not is_new_state_sample(ego, last_processed_stamp):
+                if args.control_mode == "fixed-tcp-lockstep":
+                    raise RuntimeError(
+                        "fixed-tcp-lockstep received a non-advancing cached Ego state: "
+                        f"last_processed={format_stamp(last_processed_stamp)} "
+                        f"current={format_stamp(current_stamp)}"
+                    )
                 if tcp is not None:
                     try:
                         ego, fixed_result, save_result = fixed_step_and_wait_for_ego(
@@ -1979,11 +2497,22 @@ def main(argv: list[str] | None = None) -> int:
                             previous_stamp=last_processed_stamp,
                             timeout=args.lockstep_state_timeout,
                             status_period=status_period,
-                            save_data_each_step=args.save_data_each_step,
+                            save_data_each_step=(
+                                args.save_data_each_step or transition_save_data_required
+                            ),
                             ego_candidates=ego_candidates,
+                            expected_scenario_name=(
+                                current_scenario_name
+                                if args.control_mode == "fixed-tcp-lockstep"
+                                else None
+                            ),
                         )
-                    except ScenarioBoundaryDetected as exc:
-                        if switch_to_next_scenario(tcp, exc):
+                    except (
+                        ScenarioBoundaryDetected,
+                        ActiveScenarioChanged,
+                        FixedAckUdpWaitTimeout,
+                    ) as exc:
+                        if handle_scenario_event(tcp, exc):
                             continue
                         raise
                     current_stamp = state_stamp(ego)
@@ -2033,16 +2562,22 @@ def main(argv: list[str] | None = None) -> int:
                     print(f"ERROR: {exc}")
                     return 2
 
-            if (not route_from_advanced) and route.distance_to_route(ego.x, ego.y) > args.rebuild_distance:
+            inside_drivable_area = route.drivable_area.contains(ego.x, ego.y)
+            if (
+                inside_drivable_area
+                and (not route_from_advanced)
+                and route.distance_to_route(ego.x, ego.y) > args.rebuild_distance
+            ):
                 try:
                     rebuild_route_from_runtime_pose(route, ego, args.route_length)
                 except RuntimeError as exc:
                     print(f"ERROR: {exc}")
                     return 2
+                inside_drivable_area = route.drivable_area.contains(ego.x, ego.y)
 
             route_error = route.distance_to_route(ego.x, ego.y)
-            if route_error > args.route_max_error:
-                guard_control = EgoManualControl()
+            if (not inside_drivable_area) or route_error > args.route_max_error:
+                guard_control = EgoManualControl(brake=1.0)
                 if not args.no_send:
                     send_ego_control(
                         udp=udp,
@@ -2055,31 +2590,41 @@ def main(argv: list[str] | None = None) -> int:
                     control_started = True
                 if tcp is not None:
                     try:
-                        _next_ego, fixed_result, save_result = fixed_step_and_wait_for_ego(
+                        lockstep_ego, fixed_result, save_result = fixed_step_and_wait_for_ego(
                             tcp=tcp,
                             udp=udp,
                             previous_stamp=current_stamp,
                             timeout=args.lockstep_state_timeout,
                             status_period=status_period,
-                            save_data_each_step=args.save_data_each_step,
+                            save_data_each_step=(
+                                args.save_data_each_step or transition_save_data_required
+                            ),
                             ego_candidates=ego_candidates,
+                            expected_scenario_name=current_scenario_name,
                         )
-                    except ScenarioBoundaryDetected as exc:
-                        if switch_to_next_scenario(tcp, exc):
+                    except (
+                        ScenarioBoundaryDetected,
+                        ActiveScenarioChanged,
+                        FixedAckUdpWaitTimeout,
+                    ) as exc:
+                        if handle_scenario_event(tcp, exc):
                             continue
                         raise
                 control_steps += 1
                 if trace_log.enabled:
                     trace_log.write(build_runtime_trace_record(ego=ego))
                 if loop_start >= next_status:
+                    guard_reason = "outside_drivable_area" if not inside_drivable_area else "route_error"
                     print(
-                        "route_guard: neutral control "
+                        "route_guard: brake control "
+                        f"reason={guard_reason} "
                         f"ego={ego.id} raw={ego.raw_id} "
                         f"pos=({ego.x:.2f},{ego.y:.2f}) "
+                        f"inside_drivable_area={inside_drivable_area} "
                         f"route_error={route_error:.2f}m "
                         f"max={args.route_max_error:.2f}m "
                         f"speed={ego.speed:.2f}mps "
-                        f"cmd=(thr=0.00, brk=0.00, steer=0.00) "
+                        f"cmd=(thr=0.00, brk=1.00, steer=0.00) "
                         f"rx={udp.rx_records} tx={udp.tx_packets}"
                     )
                     next_status = loop_start + status_period
@@ -2115,17 +2660,24 @@ def main(argv: list[str] | None = None) -> int:
                 control_started = True
             if tcp is not None:
                 try:
-                    _next_ego, fixed_result, save_result = fixed_step_and_wait_for_ego(
+                    lockstep_ego, fixed_result, save_result = fixed_step_and_wait_for_ego(
                         tcp=tcp,
                         udp=udp,
                         previous_stamp=current_stamp,
                         timeout=args.lockstep_state_timeout,
                         status_period=status_period,
-                        save_data_each_step=args.save_data_each_step,
+                        save_data_each_step=(
+                            args.save_data_each_step or transition_save_data_required
+                        ),
                         ego_candidates=ego_candidates,
+                        expected_scenario_name=current_scenario_name,
                     )
-                except ScenarioBoundaryDetected as exc:
-                    if switch_to_next_scenario(tcp, exc):
+                except (
+                    ScenarioBoundaryDetected,
+                    ActiveScenarioChanged,
+                    FixedAckUdpWaitTimeout,
+                ) as exc:
+                    if handle_scenario_event(tcp, exc):
                         continue
                     raise
             control_steps += 1

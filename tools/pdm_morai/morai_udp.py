@@ -222,14 +222,9 @@ class MoraiUdpClient:
                 continue
 
             self._apply_logical_ids(parsed_states)
-            next_states: dict[str, MoraiVehicleState] = {}
             for parsed in parsed_states:
                 vehicle_state = to_vehicle_state(parsed)
-                next_states[vehicle_state.id] = vehicle_state
-            # Vehicle Info is a complete snapshot. Replacing the mapping prevents
-            # actors from the previous scenario from remaining selectable after
-            # a suite transition changes the vehicle count or logical IDs.
-            self.states = next_states
+                self.states[vehicle_state.id] = vehicle_state
             self.rx_records += len(parsed_states)
             self.last_receive_time = time.monotonic()
             self.last_error = None
@@ -288,13 +283,17 @@ class MoraiUdpClient:
             return
 
         if not self.entity_ids:
-            if len(parsed_states) <= 1 or len(set(raw_ids)) != 1:
+            if len(parsed_states) == 1:
+                inferred_ids = [self.ego_id]
+                self.inferred_entity_ids = True
+            elif len(set(raw_ids)) != 1:
                 return
-            inferred_ids = [
-                self.ego_id,
-                *(f"NPC_{index}" for index in range(1, len(parsed_states))),
-            ]
-            self.inferred_entity_ids = True
+            else:
+                inferred_ids = [
+                    self.ego_id,
+                    *(f"NPC_{index}" for index in range(1, len(parsed_states))),
+                ]
+                self.inferred_entity_ids = True
         else:
             if len(parsed_states) > len(self.entity_ids):
                 return

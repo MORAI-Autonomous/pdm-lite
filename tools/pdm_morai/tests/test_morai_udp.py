@@ -5,7 +5,6 @@ from __future__ import annotations
 import socket
 import struct
 import unittest
-from unittest.mock import Mock
 
 from pdm_morai.morai_udp import (
     EGO_INFO_FMT,
@@ -45,55 +44,14 @@ class MoraiUdpClientTest(unittest.TestCase):
         self.assertEqual([state["id"] for state in states], ["Host", "Lead"])
         self.assertFalse(client.inferred_entity_ids)
 
-    def test_single_car_1_keeps_existing_fallback_behavior(self) -> None:
+    def test_single_raw_record_is_treated_as_ego(self) -> None:
         client = self.make_client()
         states = [{"id": "Car_1"}]
 
         client._apply_logical_ids(states)
 
-        self.assertEqual(states, [{"id": "Car_1"}])
-        self.assertFalse(client.inferred_entity_ids)
-
-    def test_poll_replaces_previous_scenario_vehicle_snapshot(self) -> None:
-        client = self.make_client()
-        three_vehicle_payload = b"".join(
-            struct.pack(
-                EGO_INFO_FMT,
-                6,
-                900_000_000,
-                b"Car_1",
-                *([0.0] * 18),
-            )
-            for _ in range(3)
-        )
-        single_vehicle_payload = struct.pack(
-            EGO_INFO_FMT,
-            7,
-            100_000_000,
-            b"Car_1",
-            *([0.0] * 18),
-        )
-        receiver = Mock()
-        client._receiver = receiver
-
-        receiver.recvfrom.side_effect = [
-            (three_vehicle_payload, ("127.0.0.1", 50000)),
-            BlockingIOError(),
-        ]
-        client.poll()
-        self.assertEqual(set(client.states), {"Ego", "NPC_1", "NPC_2"})
-
-        receiver.recvfrom.side_effect = [
-            (single_vehicle_payload, ("127.0.0.1", 50000)),
-            BlockingIOError(),
-        ]
-        client.poll()
-
-        self.assertEqual(set(client.states), {"Car_1"})
-        self.assertEqual(client.states["Car_1"].stamp_seconds, 7)
-        self.assertNotIn("Ego", client.states)
-        self.assertNotIn("NPC_1", client.states)
-        self.assertNotIn("NPC_2", client.states)
+        self.assertEqual(states, [{"id": "Ego", "raw_id": "Car_1"}])
+        self.assertTrue(client.inferred_entity_ids)
 
     def test_vehicle_info_uses_sim_float_wire_format(self) -> None:
         pose = (
