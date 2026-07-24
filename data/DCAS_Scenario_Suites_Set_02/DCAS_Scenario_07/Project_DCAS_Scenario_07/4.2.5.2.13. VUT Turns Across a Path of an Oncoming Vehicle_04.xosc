@@ -1,0 +1,319 @@
+<?xml version='1.0' encoding='utf-8'?>
+<OpenSCENARIO>
+  <FileHeader author="MORAI:scenario-module-team" date="2026-03-31T10:00:00" description="VUT Turns Across a Path of an Oncoming Vehicle - npc start s=8.0 m, lane offset=-1.0 m" revMajor="1" revMinor="2" />
+  <ParameterDeclarations>
+    <ParameterDeclaration name="init_ego_speed" parameterType="double" value="0.0" />
+    <ParameterDeclaration name="init_npc_speed" parameterType="double" value="0.0" />
+    <ParameterDeclaration name="start_ego_speed" parameterType="double" value="13.67" />
+    <ParameterDeclaration name="start_npc_speed" parameterType="double" value="13.67" />
+    <ParameterDeclaration name="target_speed_mps" parameterType="double" value="0.0" />
+    <ParameterDeclaration name="speed_rate_mps2" parameterType="double" value="3.0" />
+    <ParameterDeclaration name="trigger_time_s" parameterType="double" value="10.0" />
+    <ParameterDeclaration name="timeout_s" parameterType="double" value="20.0" />
+  </ParameterDeclarations>
+  <VariableDeclarations>
+    <VariableDeclaration name="moraiMap" value="KATRI" variableType="string" />
+    <VariableDeclaration name="evaluation" value="none" variableType="string" />
+  </VariableDeclarations>
+  <CatalogLocations />
+  <RoadNetwork>
+    <LogicFile filepath="KATRI" />
+  </RoadNetwork>
+  <Entities>
+    <ScenarioObject name="Ego">
+      <Vehicle mass="2100.0" model3d="HD Ioniq5" name="Ego" role="none" vehicleCategory="car">
+        <BoundingBox>
+          <Center x="1.5275" y="0.0" z="0.0" />
+          <Dimensions height="1.605" length="4.635" width="1.89" />
+        </BoundingBox>
+        <Performance maxAcceleration="0.0" maxAccelerationRate="0.0" maxDeceleration="0.0" maxDecelerationRate="0.0" maxSpeed="0.0" />
+        <Axles>
+          <FrontAxle maxSteering="0.0" positionX="2.7" positionZ="0.0" trackWidth="0.0" wheelDiameter="0.0" />
+          <RearAxle maxSteering="0.0" positionX="0.0" positionZ="0.0" trackWidth="0.0" wheelDiameter="0.0" />
+        </Axles>
+        <Properties>
+          <Property name="MotionModel" value="Dynamics" />
+          <Property name="AgentType" value="Ego" />
+        </Properties>
+      </Vehicle>
+      <ObjectController>
+        <Controller controllerType="all" name="Preset">
+          <Properties>
+            <Property name="name" value="Off" />
+          </Properties>
+        </Controller>
+      </ObjectController>
+    </ScenarioObject>
+    <ScenarioObject name="npc_1">
+      <Vehicle mass="2100" model3d="HD Ioniq5" name="gv_car_hdioniq5_2023" role="civil" vehicleCategory="car">
+        <BoundingBox>
+          <Center x="1.5275" y="0.0" z="0.0" />
+          <Dimensions height="1.605" length="4.635" width="1.890" />
+        </BoundingBox>
+        <Performance maxAcceleration="0" maxDeceleration="0" maxSpeed="0" />
+        <Axles>
+          <FrontAxle maxSteering="0" positionX="3.0" positionZ="0" trackWidth="0" wheelDiameter="0" />
+          <RearAxle maxSteering="0" positionX="0.0" positionZ="0" trackWidth="0" wheelDiameter="0" />
+        </Axles>
+        <Properties>
+          <Property name="check_tl" value="false" />
+          <Property name="apply_acc" value="false" />
+          <Property name="MotionModel" value="Kinematic" />
+          <Property name="external_control" value="false" />
+        </Properties>
+      </Vehicle>
+      <ObjectController>
+        <Controller controllerType="all" name="Preset">
+          <Properties>
+            <Property name="name" value="Standard" />
+          </Properties>
+        </Controller>
+      </ObjectController>
+      <ObjectController>
+        <Controller controllerType="longitudinal" name="Longitudinal">
+          <Properties>
+            <Property name="group" value="LongitudinalCarFollowing" />
+            <Property name="model" value="Idm" />
+            <Property name="max_acceleration" value="4.0" />
+            <Property name="comfort_deceleration" value="1.5" />
+            <Property name="min_distance" value="3.0" />
+            <Property name="time_gap" value="1.5" />
+            <Property name="desired_speed" value="33.299999" />
+            <Property name="acceleration_exponent" value="4.0" />
+            <Property name="traffic_lights" value="false" />
+          </Properties>
+        </Controller>
+      </ObjectController>
+      <ObjectController>
+        <Controller controllerType="lateral" name="Lateral">
+          <Properties>
+            <Property name="group" value="LateralDiscretionaryLaneChange" />
+            <Property name="model" value="Mobil" />
+            <Property name="changing_threshold" value="1.0" />
+            <Property name="politeness_factor" value="0.5" />
+            <Property name="bias_for_right_lane" value="0.2" />
+            <Property name="safe_deceleration" value="-3.0" />
+          </Properties>
+        </Controller>
+      </ObjectController>
+    </ScenarioObject>
+  </Entities>
+  <Storyboard>
+    <Init>
+      <Actions>
+        <Private entityRef="Ego">
+          <PrivateAction>
+            <TeleportAction>
+              <Position>
+                <WorldPosition x="-2897.098" y="1007.656" z="28.512" h="-0.509" p="0" r="0" />
+              </Position>
+            </TeleportAction>
+          </PrivateAction>
+          <PrivateAction>
+            <LongitudinalAction>
+              <SpeedAction>
+                <SpeedActionTarget>
+                  <AbsoluteTargetSpeed value="$init_ego_speed" />
+                </SpeedActionTarget>
+                <SpeedActionDynamics dynamicsDimension="time" dynamicsShape="step" value="0" />
+              </SpeedAction>
+            </LongitudinalAction>
+          </PrivateAction>
+          <PrivateAction>
+            <RoutingAction>
+              <AssignRouteAction>
+                <Route closed="false" name="Ego_Route">
+                  <Waypoint routeStrategy="shortest">
+                    <Position>
+                      <WorldPosition x="-2897.0981401472236" y="1007.655584926717" z="28.512905373761363" h="-0.5095629747093837" p="0" r="0" />
+                    </Position>
+                  </Waypoint>
+                  <Waypoint routeStrategy="shortest">
+                    <Position>
+                      <WorldPosition x="-2848.51519524795" y="980.6493590916507" z="28.482562243886978" h="-0.5080760044039291" p="0" r="0" />
+                    </Position>
+                  </Waypoint>
+                  <Waypoint routeStrategy="shortest">
+                    <Position>
+                      <WorldPosition x="-2855.9280143878423" y="931.2519495603628" z="28.48283047658888" h="2.6268767613226864" p="0" r="0" />
+                    </Position>
+                  </Waypoint>
+                </Route>
+              </AssignRouteAction>
+            </RoutingAction>
+          </PrivateAction>
+        </Private>
+        <Private entityRef="npc_1">
+          <PrivateAction>
+            <TeleportAction>
+              <Position>
+                <LanePosition laneId="A2256W000228" offset="-1.0" roadId="WSR4005227" s="8.0">
+                  <Orientation type="relative" h="0" p="0" r="0" />
+                </LanePosition>
+              </Position>
+            </TeleportAction>
+          </PrivateAction>
+          <PrivateAction>
+            <LateralAction>
+              <LaneOffsetAction continuous="true">
+                <LaneOffsetActionDynamics maxLateralAcc="0.0" dynamicsShape="Step" />
+                <LaneOffsetTarget>
+                  <AbsoluteTargetLaneOffset value="-1.0" />
+                </LaneOffsetTarget>
+              </LaneOffsetAction>
+            </LateralAction>
+          </PrivateAction>
+          <PrivateAction>
+            <LongitudinalAction>
+              <SpeedAction>
+                <SpeedActionTarget>
+                  <AbsoluteTargetSpeed value="$init_npc_speed" />
+                </SpeedActionTarget>
+                <SpeedActionDynamics dynamicsDimension="time" dynamicsShape="step" value="0" />
+              </SpeedAction>
+            </LongitudinalAction>
+          </PrivateAction>
+          <PrivateAction>
+            <RoutingAction>
+              <AssignRouteAction>
+                <Route closed="false" name="npc_1_Route">
+                  <Waypoint routeStrategy="shortest">
+                    <Position>
+                      <LanePosition laneId="A2256W000228" offset="-1.0" roadId="WSR4005227" s="8.0">
+                        <Orientation type="relative" h="0" p="0" r="0" />
+                      </LanePosition>
+                    </Position>
+                  </Waypoint>
+                  <Waypoint routeStrategy="shortest">
+                    <Position>
+                      <LanePosition laneId="A2256W000330" offset="0" roadId="WSR4007502" s="10.0">
+                        <Orientation type="relative" h="0" p="0" r="0" />
+                      </LanePosition>
+                    </Position>
+                  </Waypoint>
+                  <Waypoint routeStrategy="shortest">
+                    <Position>
+                      <LanePosition laneId="A2256W000336" offset="0" roadId="WSR4002888" s="100.0">
+                        <Orientation type="relative" h="0" p="0" r="0" />
+                      </LanePosition>
+                    </Position>
+                  </Waypoint>
+                </Route>
+              </AssignRouteAction>
+            </RoutingAction>
+          </PrivateAction>
+        </Private>
+      </Actions>
+    </Init>
+    <Story name="SynchronizeActionStory">
+      <ParameterDeclarations />
+      <Act name="Act_SynchronizeAction_At_10s">
+        <ManeuverGroup name="MG_SynchronizeAction" maximumExecutionCount="1">
+          <Actors selectTriggeringEntities="false">
+            <EntityRef entityRef="Ego" />
+          </Actors>
+          <Maneuver name="Maneuver_Synchronize">
+            <Event name="start_vehicle" maximumExecutionCount="1" priority="override">
+              <Action name="start_action">
+                <PrivateAction>
+                  <LongitudinalAction>
+                    <SpeedAction>
+                      <SpeedActionTarget>
+                        <AbsoluteTargetSpeed value="$start_ego_speed" />
+                      </SpeedActionTarget>
+                      <SpeedActionDynamics dynamicsDimension="time" dynamicsShape="step" value="0" />
+                    </SpeedAction>
+                  </LongitudinalAction>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="EventStart_SimulationTime_3s" delay="0" conditionEdge="rising">
+                    <ByValueCondition>
+                      <SimulationTimeCondition value="3.0" rule="greaterThan" />
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+            <Event name="Event_Synchronize_At0s" maximumExecutionCount="1" priority="override">
+              <Action name="Action_Synchronize_AbsoluteSpeed">
+                <PrivateAction>
+                  <SynchronizeAction masterEntityRef="Ego" targetTolerance="0.1" targetToleranceMaster="0.1">
+                    <TargetPosition>
+                      <WorldPosition x="-2862.544" y="988.434" z="28.548" h="-0.506" p="0" r="0" />
+                    </TargetPosition>
+                    <TargetPositionMaster>
+                      <WorldPosition x="-2862.544" y="988.434" z="28.548" h="-0.506" p="0" r="0" />
+                    </TargetPositionMaster>
+                    <FinalSpeed>
+                      <AbsoluteSpeed value="16.67" />
+                    </FinalSpeed>
+                  </SynchronizeAction>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="EventStart_SimulationTime_0s" delay="0" conditionEdge="rising">
+                    <ByValueCondition>
+                      <SimulationTimeCondition rule="greaterThan" value="$trigger_time_s" />
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+        </ManeuverGroup>
+        <ManeuverGroup name="MG_EnvironmentAction" maximumExecutionCount="1">
+          <Actors selectTriggeringEntities="false">
+            <EntityRef entityRef="NPC_1" />
+          </Actors>
+          <Maneuver name="Maneuver_EnvironmentChange">
+            <Event name="start_vehicle" maximumExecutionCount="1" priority="override">
+              <Action name="start_action">
+                <PrivateAction>
+                  <LongitudinalAction>
+                    <SpeedAction>
+                      <SpeedActionTarget>
+                        <AbsoluteTargetSpeed value="$start_npc_speed" />
+                      </SpeedActionTarget>
+                      <SpeedActionDynamics dynamicsDimension="time" dynamicsShape="step" value="0" />
+                    </SpeedAction>
+                  </LongitudinalAction>
+                </PrivateAction>
+              </Action>
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="EventStart_SimulationTime_3s" delay="0" conditionEdge="rising">
+                    <ByValueCondition>
+                      <SimulationTimeCondition value="3.0" rule="greaterThan" />
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+        </ManeuverGroup>
+        <StartTrigger>
+          <ConditionGroup>
+            <Condition name="ActStart_SimulationTime" delay="0" conditionEdge="none">
+              <ByValueCondition>
+                <SimulationTimeCondition rule="greaterThan" value="0" />
+              </ByValueCondition>
+            </Condition>
+          </ConditionGroup>
+        </StartTrigger>
+        <StopTrigger />
+      </Act>
+    </Story>
+    <StopTrigger>
+      <ConditionGroup>
+        <Condition name="Time_out" delay="0" conditionEdge="none">
+          <ByValueCondition>
+            <SimulationTimeCondition rule="greaterThan" value="$timeout_s" />
+          </ByValueCondition>
+        </Condition>
+      </ConditionGroup>
+    </StopTrigger>
+  </Storyboard>
+</OpenSCENARIO>

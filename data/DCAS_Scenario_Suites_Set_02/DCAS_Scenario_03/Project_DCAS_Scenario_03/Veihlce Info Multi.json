@@ -1,0 +1,58 @@
+{
+  "version": "1.0.0-alpha",
+  "createDate": "2026-05-26 00:00",
+  "interface": {
+    "activate": true,
+    "isExternal": false,
+    "recordEnabled": false,
+    "outputFormat": "CSV",
+    "payloadKind": "DatamodelProtobuf",
+    "name": "Veihlce Info Multi",
+    "projectName": "Project_DCAS_Scenario_03",
+    "messageTemplateFileName": "Veihlce Info Multi",
+    "networkType": "UDP",
+    "hertz": 60,
+    "direction": "SEND",
+    "hostAddr": {
+      "ip": "127.0.0.1",
+      "port": 0
+    },
+    "destinationAddr": {
+      "ip": "127.0.0.1",
+      "port": 9097
+    },
+    "entityInfo": {
+      "useAllEntity": true,
+      "entityList": [
+        {
+          "id": "Ego",
+          "name": "Ego"
+        },
+        {
+          "id": "NPC_1",
+          "name": "NPC_1"
+        }
+      ]
+    },
+    "recordRelationDataModelList": [],
+    "rosInfo": {
+      "topicName": "",
+      "messageType": "",
+      "qos": {
+        "history": "KEEP_LAST",
+        "depth": 10,
+        "reliability": "RELIABLE",
+        "durability": "VOLATILE"
+      },
+      "tfStatic": {
+        "enabled": false,
+        "parentFrame": "base_link",
+        "childFrame": ""
+      }
+    },
+    "canInfo": {
+      "id": "",
+      "name": ""
+    }
+  }
+}

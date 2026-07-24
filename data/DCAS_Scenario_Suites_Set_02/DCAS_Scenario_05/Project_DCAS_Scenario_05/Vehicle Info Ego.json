@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0-alpha",
+  "createDate": "2026-05-26 00:00",
+  "interface": {
+    "activate": true,
+    "isExternal": false,
+    "recordEnabled": false,
+    "outputFormat": "CSV",
+    "name": "Vehicle Info Ego",
+    "projectName": "Project_DCAS_Scenario_05",
+    "messageTemplateFileName": "Vehicle Info",
+    "networkType": "UDP",
+    "hertz": 60,
+    "direction": "SEND",
+    "hostAddr": {
+      "ip": "127.0.0.1",
+      "port": 0
+    },
+    "destinationAddr": {
+      "ip": "127.0.0.1",
+      "port": 9097
+    },
+    "entityList": [
+      {
+        "id": "Ego",
+        "name": "Ego",
+        "descriptorName": ""
+      },
+      {
+        "id": "NPC_1",
+        "name": "NPC_1",
+        "descriptorName": ""
+      },
+      {
+        "id": "NPC_2",
+        "name": "NPC_2",
+        "descriptorName": ""
+      }
+    ],
+    "recordRelationDataModelList": [],
+    "rosInfo": {
+      "topicName": "",
+      "messageType": ""
+    },
+    "canInfo": {
+      "id": "",
+      "name": ""
+    }
+  }
+}

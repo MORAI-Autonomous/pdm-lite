@@ -1,0 +1,1656 @@
+{
+  "map": {
+    "type": "Standard",
+    "name": "KATRI",
+    "id": 100011,
+    "originFrame": {
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    }
+  },
+  "scenarioList": [
+    {
+      "name": "4.2.5.2.4. Following a Lead Vehicle",
+      "path": "4.2.5.2.4. Following a Lead Vehicle.xosc",
+      "config": {
+        "sensorList": [],
+        "kineticsModelList": [
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "Ego",
+            "dynamicType": "Dynamics",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          },
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "NPC_1",
+            "dynamicType": "Kinematic",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          }
+        ],
+        "DynamicsCustomData": [
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "Ego"
+          },
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "NPC_1"
+          }
+        ],
+        "AgentModels": [
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 10,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "Ego",
+            "group": "LongitudinalCarFollowing"
+          },
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 0,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "NPC_1",
+            "group": "LongitudinalCarFollowing"
+          }
+        ],
+        "vehicleAgentTypeList": [
+          {
+            "ObjectName": "Ego",
+            "AgentType": 1
+          },
+          {
+            "ObjectName": "NPC_1",
+            "AgentType": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "4.2.5.2.4. Following a Lead Vehicle_01",
+      "path": "4.2.5.2.4. Following a Lead Vehicle_01.xosc",
+      "config": {
+        "sensorList": [],
+        "kineticsModelList": [
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "Ego",
+            "dynamicType": "Dynamics",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          },
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "NPC_1",
+            "dynamicType": "Kinematic",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          }
+        ],
+        "DynamicsCustomData": [
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "Ego"
+          },
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "NPC_1"
+          }
+        ],
+        "AgentModels": [
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 10,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "Ego",
+            "group": "LongitudinalCarFollowing"
+          },
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 0,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "NPC_1",
+            "group": "LongitudinalCarFollowing"
+          }
+        ],
+        "vehicleAgentTypeList": [
+          {
+            "ObjectName": "Ego",
+            "AgentType": 1
+          },
+          {
+            "ObjectName": "NPC_1",
+            "AgentType": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "4.2.5.2.4. Following a Lead Vehicle_02",
+      "path": "4.2.5.2.4. Following a Lead Vehicle_02.xosc",
+      "config": {
+        "sensorList": [],
+        "kineticsModelList": [
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "Ego",
+            "dynamicType": "Dynamics",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          },
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "NPC_1",
+            "dynamicType": "Kinematic",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          }
+        ],
+        "DynamicsCustomData": [
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "Ego"
+          },
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "NPC_1"
+          }
+        ],
+        "AgentModels": [
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 10,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "Ego",
+            "group": "LongitudinalCarFollowing"
+          },
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 0,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "NPC_1",
+            "group": "LongitudinalCarFollowing"
+          }
+        ],
+        "vehicleAgentTypeList": [
+          {
+            "ObjectName": "Ego",
+            "AgentType": 1
+          },
+          {
+            "ObjectName": "NPC_1",
+            "AgentType": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "4.2.5.2.4. Following a Lead Vehicle_03",
+      "path": "4.2.5.2.4. Following a Lead Vehicle_03.xosc",
+      "config": {
+        "sensorList": [],
+        "kineticsModelList": [
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "Ego",
+            "dynamicType": "Dynamics",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          },
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "NPC_1",
+            "dynamicType": "Kinematic",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          }
+        ],
+        "DynamicsCustomData": [
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "Ego"
+          },
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "NPC_1"
+          }
+        ],
+        "AgentModels": [
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 10,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "Ego",
+            "group": "LongitudinalCarFollowing"
+          },
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 0,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "NPC_1",
+            "group": "LongitudinalCarFollowing"
+          }
+        ],
+        "vehicleAgentTypeList": [
+          {
+            "ObjectName": "Ego",
+            "AgentType": 1
+          },
+          {
+            "ObjectName": "NPC_1",
+            "AgentType": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "4.2.5.2.4. Following a Lead Vehicle_04",
+      "path": "4.2.5.2.4. Following a Lead Vehicle_04.xosc",
+      "config": {
+        "sensorList": [],
+        "kineticsModelList": [
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "Ego",
+            "dynamicType": "Dynamics",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          },
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "NPC_1",
+            "dynamicType": "Kinematic",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          }
+        ],
+        "DynamicsCustomData": [
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "Ego"
+          },
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "NPC_1"
+          }
+        ],
+        "AgentModels": [
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 10,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "Ego",
+            "group": "LongitudinalCarFollowing"
+          },
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 0,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "NPC_1",
+            "group": "LongitudinalCarFollowing"
+          }
+        ],
+        "vehicleAgentTypeList": [
+          {
+            "ObjectName": "Ego",
+            "AgentType": 1
+          },
+          {
+            "ObjectName": "NPC_1",
+            "AgentType": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "4.2.5.2.4. Following a Lead Vehicle_05",
+      "path": "4.2.5.2.4. Following a Lead Vehicle_05.xosc",
+      "config": {
+        "sensorList": [],
+        "kineticsModelList": [
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "Ego",
+            "dynamicType": "Dynamics",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          },
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "NPC_1",
+            "dynamicType": "Kinematic",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          }
+        ],
+        "DynamicsCustomData": [
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "Ego"
+          },
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "NPC_1"
+          }
+        ],
+        "AgentModels": [
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 10,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "Ego",
+            "group": "LongitudinalCarFollowing"
+          },
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 0,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "NPC_1",
+            "group": "LongitudinalCarFollowing"
+          }
+        ],
+        "vehicleAgentTypeList": [
+          {
+            "ObjectName": "Ego",
+            "AgentType": 1
+          },
+          {
+            "ObjectName": "NPC_1",
+            "AgentType": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "4.2.5.2.4. Following a Lead Vehicle_06",
+      "path": "4.2.5.2.4. Following a Lead Vehicle_06.xosc",
+      "config": {
+        "sensorList": [],
+        "kineticsModelList": [
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "Ego",
+            "dynamicType": "Dynamics",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          },
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "NPC_1",
+            "dynamicType": "Kinematic",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          }
+        ],
+        "DynamicsCustomData": [
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "Ego"
+          },
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "NPC_1"
+          }
+        ],
+        "AgentModels": [
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 10,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "Ego",
+            "group": "LongitudinalCarFollowing"
+          },
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 0,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "NPC_1",
+            "group": "LongitudinalCarFollowing"
+          }
+        ],
+        "vehicleAgentTypeList": [
+          {
+            "ObjectName": "Ego",
+            "AgentType": 1
+          },
+          {
+            "ObjectName": "NPC_1",
+            "AgentType": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "4.2.5.2.4. Following a Lead Vehicle_07",
+      "path": "4.2.5.2.4. Following a Lead Vehicle_07.xosc",
+      "config": {
+        "sensorList": [],
+        "kineticsModelList": [
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "Ego",
+            "dynamicType": "Dynamics",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          },
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "NPC_1",
+            "dynamicType": "Kinematic",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          }
+        ],
+        "DynamicsCustomData": [
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "Ego"
+          },
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "NPC_1"
+          }
+        ],
+        "AgentModels": [
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 10,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "Ego",
+            "group": "LongitudinalCarFollowing"
+          },
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 0,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "NPC_1",
+            "group": "LongitudinalCarFollowing"
+          }
+        ],
+        "vehicleAgentTypeList": [
+          {
+            "ObjectName": "Ego",
+            "AgentType": 1
+          },
+          {
+            "ObjectName": "NPC_1",
+            "AgentType": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "4.2.5.2.4. Following a Lead Vehicle_08",
+      "path": "4.2.5.2.4. Following a Lead Vehicle_08.xosc",
+      "config": {
+        "sensorList": [],
+        "kineticsModelList": [
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "Ego",
+            "dynamicType": "Dynamics",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          },
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "NPC_1",
+            "dynamicType": "Kinematic",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          }
+        ],
+        "DynamicsCustomData": [
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "Ego"
+          },
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "NPC_1"
+          }
+        ],
+        "AgentModels": [
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 10,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "Ego",
+            "group": "LongitudinalCarFollowing"
+          },
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 0,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "NPC_1",
+            "group": "LongitudinalCarFollowing"
+          }
+        ],
+        "vehicleAgentTypeList": [
+          {
+            "ObjectName": "Ego",
+            "AgentType": 1
+          },
+          {
+            "ObjectName": "NPC_1",
+            "AgentType": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "4.2.5.2.4. Following a Lead Vehicle_09",
+      "path": "4.2.5.2.4. Following a Lead Vehicle_09.xosc",
+      "config": {
+        "sensorList": [],
+        "kineticsModelList": [
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "Ego",
+            "dynamicType": "Dynamics",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          },
+          {
+            "modelName": "None",
+            "type": "Standard",
+            "optionId": 0,
+            "parentName": "NPC_1",
+            "dynamicType": "Kinematic",
+            "body": {
+              "mass": 0,
+              "dragCoeff": 0,
+              "ineritaTensorScale": 0,
+              "centerOfMass": {
+                "bEnable": false,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                }
+              },
+              "iD": 0
+            },
+            "steer": {
+              "maxAngle": 0
+            },
+            "brake": {
+              "maxTorque": 0
+            }
+          }
+        ],
+        "DynamicsCustomData": [
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "Ego"
+          },
+          {
+            "vehicleSetup": {
+              "mass": 2100,
+              "centerOfMassOverride": {
+                "x": 150,
+                "y": 0,
+                "z": 50
+              },
+              "dragCoefficient": 0.30000001192092896,
+              "inertiaTensorScale": {
+                "x": 1.47,
+                "y": 2.57,
+                "z": 2.3
+              },
+              "maxBrakeTorque": 3000
+            },
+            "axle1": {
+              "maxSteerAngle": 40,
+              "wheelPosition": 299.9999084472588,
+              "trackWidth": 162.54296875,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "axle2": {
+              "maxSteerAngle": 0,
+              "wheelPosition": 0.11405086516659321,
+              "trackWidth": 163.9704132080078,
+              "wheelDiameter": 74,
+              "wheelMass": 20
+            },
+            "objectName": "NPC_1"
+          }
+        ],
+        "AgentModels": [
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 10,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "Ego",
+            "group": "LongitudinalCarFollowing"
+          },
+          {
+            "maxAcceleration": 2,
+            "comfortDeceleration": 1.5,
+            "minDistance": 1,
+            "timeGap": 1.2,
+            "desiredSpeed": 0,
+            "accelerationExponent": 4,
+            "carFollowingModel": "Idm",
+            "agentName": "NPC_1",
+            "group": "LongitudinalCarFollowing"
+          }
+        ],
+        "vehicleAgentTypeList": [
+          {
+            "ObjectName": "Ego",
+            "AgentType": 1
+          },
+          {
+            "ObjectName": "NPC_1",
+            "AgentType": 0
+          }
+        ]
+      }
+    }
+  ],
+  "interfaceList": [
+    {
+      "name": "Manual Control",
+      "path": "Manual Control.json"
+    },
+    {
+      "name": "Veihlce Info Multi",
+      "path": "Veihlce Info Multi.json"
+    }
+  ]
+}

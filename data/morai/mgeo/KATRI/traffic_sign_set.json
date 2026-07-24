@@ -1,0 +1,5838 @@
+[
+  {
+    "idx": "B1256W000077",
+    "link_id_list": [
+      "A2256W001010"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3467.636469,
+      -327.2466217,
+      31.77355521
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000114",
+    "link_id_list": [
+      "A2256W001028"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3411.73329,
+      413.1971584,
+      31.12134809
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000036",
+    "link_id_list": [
+      "A2256W000853"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3377.37768,
+      1100.638925,
+      30.91472489
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000053",
+    "link_id_list": [
+      "A2256W000990"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3371.222352,
+      861.530838,
+      30.86812478
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000054",
+    "link_id_list": [
+      "A2256W000987"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3369.899685,
+      700.663441,
+      30.97365275
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000102",
+    "link_id_list": [
+      "A2256W000990"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3371.194029,
+      861.5336858,
+      31.5216999
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000181",
+    "link_id_list": [
+      "A2256W000987"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3369.885186,
+      700.6613375,
+      31.31316732
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000183",
+    "link_id_list": [
+      "A2256W000853"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3376.257583,
+      1121.24744,
+      31.61407349
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000184",
+    "link_id_list": [
+      "A2256W000853"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3377.379108,
+      1100.639236,
+      31.44725039
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000021",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2670.484175,
+      1104.681865,
+      30.87987944
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000022",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2670.716293,
+      1154.83477,
+      30.92177966
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000035",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3378.546485,
+      1400.100598,
+      30.99511654
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000042",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2865.451583,
+      1860.417479,
+      30.30252704
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000043",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2671.207709,
+      1254.638196,
+      30.89693546
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000044",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2674.199346,
+      1499.516085,
+      30.7471143
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000045",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3342.731999,
+      1687.687565,
+      30.44147461
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000046",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3374.280603,
+      1548.030468,
+      30.67333833
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000047",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3001.787634,
+      1899.523402,
+      30.30049823
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000048",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3226.426698,
+      1835.595523,
+      30.46147959
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000049",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3142.334565,
+      1879.99518,
+      30.23185368
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000050",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3262.811257,
+      1804.992813,
+      30.53626028
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000051",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2756.603992,
+      1769.193547,
+      30.35442041
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000052",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2954.848634,
+      1892.83289,
+      30.35808753
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000055",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3358.229073,
+      1642.51508,
+      30.60580996
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000056",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3378.235592,
+      1449.990898,
+      30.95943441
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000061",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2672.00478,
+      1402.989018,
+      30.88390515
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000062",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2693.93428,
+      1641.949225,
+      30.37602946
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000064",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2669.718282,
+      954.8320742,
+      30.66942177
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000106",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2672.174399,
+      1120.062,
+      31.52347708
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000113",
+    "link_id_list": [
+      "A2256W001033"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3432.387619,
+      1765.006016,
+      31.24132258
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000161",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2670.721842,
+      1154.83431,
+      31.28310542
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000162",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2671.204786,
+      1254.640604,
+      31.21868736
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000163",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2669.755118,
+      954.8315981,
+      31.10665605
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000164",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2670.492004,
+      1104.682174,
+      31.291713
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000165",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2693.932005,
+      1641.950291,
+      30.74010156
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000166",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2709.153519,
+      1686.971466,
+      30.85896621
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000167",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2672.009263,
+      1402.989831,
+      31.20295552
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000168",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2674.190982,
+      1499.515975,
+      31.08999585
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000177",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3378.237218,
+      1449.991313,
+      31.28884727
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000178",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3378.558864,
+      1400.096805,
+      31.37323014
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000179",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3358.220646,
+      1642.510165,
+      30.95815457
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000180",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3374.266326,
+      1548.02617,
+      31.0975898
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000185",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2954.844944,
+      1892.834408,
+      30.74063019
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000186",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3001.784272,
+      1899.527902,
+      30.70739756
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000187",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2756.607567,
+      1769.191421,
+      30.7245467
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000188",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2865.447062,
+      1860.427748,
+      30.67831124
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000189",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3262.803744,
+      1804.982751,
+      30.9450275
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000190",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3342.711982,
+      1687.673837,
+      30.85660076
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000191",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3142.334152,
+      1879.988876,
+      30.58890323
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000192",
+    "link_id_list": [
+      "A2256W000833"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3226.419482,
+      1835.579868,
+      30.84137722
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000009",
+    "link_id_list": [
+      "A2256W000804"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2707.808925,
+      370.0200833,
+      31.22676954
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000010",
+    "link_id_list": [
+      "A2256W000811"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2839.360604,
+      0.5810200105,
+      33.49627734
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000012",
+    "link_id_list": [
+      "A2256W000804"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2707.767995,
+      370.0220231,
+      30.20797658
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000015",
+    "link_id_list": [
+      "A2256W000780"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2786.225014,
+      -18.54064803,
+      30.95462295
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000017",
+    "link_id_list": [
+      "A2256W001042"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2694.124013,
+      -27.5783827,
+      30.95599949
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000018",
+    "link_id_list": [
+      "A2256W001042"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2624.143292,
+      378.8451298,
+      31.10243393
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000019",
+    "link_id_list": [
+      "A2256W000536"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3121.392429,
+      30.82033378,
+      32.0669565
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000020",
+    "link_id_list": [
+      "A2256W000769"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3168.246505,
+      23.97305042,
+      32.86498021
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000023",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2669.217256,
+      208.6598154,
+      30.72254775
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000033",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3373.733668,
+      400.5658645,
+      31.08649001
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000034",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3341.674245,
+      56.39595399,
+      30.33155805
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000037",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2849.061253,
+      -125.4264529,
+      30.75752583
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000038",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2700.114415,
+      47.89386444,
+      30.49417362
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000039",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3273.232432,
+      -58.12630935,
+      30.43040107
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000040",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3025.31766,
+      -171.2562062,
+      30.11431238
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000057",
+    "link_id_list": [
+      "A2256W000523"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3167.191297,
+      37.8185788,
+      30.98782937
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000058",
+    "link_id_list": [
+      "A2256W000926"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3195.080701,
+      111.7888421,
+      30.33297879
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000073",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3158.950533,
+      -140.9983128,
+      30.36798315
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000074",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2890.886849,
+      -146.3004416,
+      30.37454339
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000075",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3371.838319,
+      246.5612873,
+      30.62184039
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000076",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3322.368735,
+      12.50533213,
+      30.55730752
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000079",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2773.818082,
+      -67.30695106,
+      30.46841511
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000080",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2676.789926,
+      135.8813825,
+      30.80908548
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000093",
+    "link_id_list": [
+      "A2256W001042"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2624.180753,
+      378.8202073,
+      31.72011091
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000095",
+    "link_id_list": [
+      "A2256W001042"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2694.133308,
+      -27.57056862,
+      31.58128671
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000101",
+    "link_id_list": [
+      "A2256W001021"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2615.10918,
+      427.1905067,
+      31.98926471
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000111",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3373.08135,
+      496.4113141,
+      31.2852883
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000115",
+    "link_id_list": [
+      "A2256W000811"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3017.637788,
+      22.12930724,
+      31.60069241
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000116",
+    "link_id_list": [
+      "A2256W000811"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2805.561265,
+      12.20703689,
+      31.96798131
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000117",
+    "link_id_list": [
+      "A2256W000523"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3167.191565,
+      37.79946242,
+      31.41201479
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000118",
+    "link_id_list": [
+      "A2256W000769"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3168.257096,
+      23.95300999,
+      33.2673618
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000120",
+    "link_id_list": [
+      "A2256W000765"
+    ],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3191.102416,
+      500.0280363,
+      30.83600122
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000124",
+    "link_id_list": [
+      "A2256W000536"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3121.392064,
+      30.8264091,
+      32.4246042
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000126",
+    "link_id_list": [
+      "A2256W000528"
+    ],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3053.832842,
+      44.27930831,
+      31.12711413
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000127",
+    "link_id_list": [
+      "A2256W000745"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3013.283345,
+      163.1886023,
+      31.18135011
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000128",
+    "link_id_list": [
+      "A2256W000815"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3041.145811,
+      198.1743094,
+      30.60438222
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000139",
+    "link_id_list": [
+      "A2256W000926"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3195.083244,
+      111.7900697,
+      30.80156059
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000140",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2669.213672,
+      208.6649408,
+      31.08623835
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000182",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3373.728357,
+      400.5682619,
+      31.44328243
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000193",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2676.788023,
+      135.8906003,
+      31.18961492
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000195",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2773.823675,
+      -67.29993307,
+      30.82424949
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000196",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2700.104212,
+      47.89524809,
+      30.86246443
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000201",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3322.358826,
+      12.50364501,
+      30.89637744
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000202",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3273.237825,
+      -58.1294529,
+      30.81409123
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000203",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3371.837933,
+      246.5613302,
+      30.90292394
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000204",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3341.67298,
+      56.39749602,
+      30.69358445
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000205",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2890.900383,
+      -146.2923647,
+      30.76315947
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000206",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2849.061682,
+      -125.4265246,
+      31.14223511
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000207",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3158.943108,
+      -140.9843869,
+      30.70019678
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000208",
+    "link_id_list": [
+      "A2256W000995"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3025.31645,
+      -171.2399699,
+      30.5544908
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000223",
+    "link_id_list": [
+      "A2256W000549"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3094.49781,
+      -139.642996,
+      32.94574273
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000224",
+    "link_id_list": [
+      "A2256W000575"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2969.728708,
+      -139.6875194,
+      31.41869272
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000225",
+    "link_id_list": [
+      "A2256W001021"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3241.259587,
+      -150.1472603,
+      31.40604387
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000226",
+    "link_id_list": [
+      "A2256W000549"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3094.497178,
+      -139.640216,
+      32.1473385
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000229",
+    "link_id_list": [
+      "A2256W001021"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2818.017864,
+      -163.5775489,
+      30.97648741
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000230",
+    "link_id_list": [
+      "A2256W001021"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2818.012605,
+      -163.5948046,
+      31.60065302
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000235",
+    "link_id_list": [
+      "A2256W001021"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3241.269633,
+      -150.1592553,
+      30.83423965
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000001",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2830.494345,
+      933.804022,
+      31.31892071
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000002",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2830.839588,
+      934.1499889,
+      31.31975519
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000003",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2805.188634,
+      1004.062278,
+      34.30977726
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000004",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2804.856983,
+      1004.287618,
+      34.27318496
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000005",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2916.700808,
+      868.6136125,
+      30.79688028
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000006",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2886.864133,
+      743.2664416,
+      31.0168472
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000007",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2830.668665,
+      933.978708,
+      31.77960329
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000008",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2902.299948,
+      933.7476472,
+      31.32408025
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000011",
+    "link_id_list": [
+      "A2256W000813"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3088.22871,
+      477.9518671,
+      31.0953123
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000013",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2718.212095,
+      952.0852832,
+      31.54274203
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000014",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2807.427857,
+      1002.485038,
+      30.66294643
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000016",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2722.682893,
+      952.086438,
+      31.45340119
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000024",
+    "link_id_list": [
+      "A2256W000983"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2669.440423,
+      754.9582202,
+      30.93836647
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000025",
+    "link_id_list": [
+      "A2256W000950"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3154.067078,
+      508.3341377,
+      31.33337005
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000026",
+    "link_id_list": [
+      "A2256W000950"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3103.165536,
+      507.6691073,
+      30.31447931
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000027",
+    "link_id_list": [
+      "A2256W000946"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3207.184986,
+      604.336747,
+      31.1408397
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000028",
+    "link_id_list": [
+      "A2256W000946"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3207.165765,
+      604.3372493,
+      31.73237154
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000029",
+    "link_id_list": [
+      "A2256W000950"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3083.821843,
+      508.2394905,
+      31.82484924
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000030",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3080.39033,
+      831.3528679,
+      30.63918053
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000031",
+    "link_id_list": [
+      "A2256W000950"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3103.164105,
+      507.6887143,
+      31.0087743
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000032",
+    "link_id_list": [
+      "A2256W000950"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3083.80949,
+      508.2044176,
+      31.19807768
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000059",
+    "link_id_list": [
+      "A2256W001034"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2554.846679,
+      511.5079401,
+      31.27690211
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000060",
+    "link_id_list": [
+      "A2256W001045"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2598.470335,
+      468.7177405,
+      31.92055982
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000063",
+    "link_id_list": [
+      "A2256W000534"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2667.84724,
+      552.399172,
+      30.79287452
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000065",
+    "link_id_list": [
+      "A2256W000711"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2934.503288,
+      463.8482186,
+      31.37041608
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000066",
+    "link_id_list": [
+      "A2256W000711"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2934.513631,
+      463.8194401,
+      32.01185
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000071",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "214",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2687.436032,
+      557.5674651,
+      31.53347617
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000072",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2687.497295,
+      557.587994,
+      33.67430531
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000078",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3190.180796,
+      1123.525959,
+      31.5442792
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000081",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2948.86007,
+      853.1571988,
+      30.32148141
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000082",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2945.143952,
+      787.1450092,
+      30.49955494
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000084",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "212",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2874.269826,
+      934.2264714,
+      30.91799582
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000085",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3064.042126,
+      782.996821,
+      29.85534818
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000086",
+    "link_id_list": [
+      "A2256W000934"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "214",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3017.054526,
+      507.4484136,
+      31.10939968
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000087",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "213",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2787.664499,
+      1129.654391,
+      30.91112205
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000088",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3002.112599,
+      794.6008537,
+      30.12178487
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000094",
+    "link_id_list": [
+      "A2256W000398"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2753.541312,
+      504.1303917,
+      31.24508532
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000096",
+    "link_id_list": [
+      "A2256W000616"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2585.731216,
+      480.5441277,
+      31.20617588
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000097",
+    "link_id_list": [
+      "A2256W001034"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2551.838358,
+      509.0923051,
+      31.44941367
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000098",
+    "link_id_list": [
+      "A2256W000985"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "211",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2759.301734,
+      545.1740275,
+      30.3226976
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000099",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3085.485222,
+      560.8119539,
+      31.27581189
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000100",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "227",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3080.413667,
+      831.3480531,
+      30.01781537
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000103",
+    "link_id_list": [
+      "A2256W000921"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3020.076952,
+      518.2356053,
+      31.44072169
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000104",
+    "link_id_list": [
+      "A2256W000921"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3020.075559,
+      518.263266,
+      32.07530233
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000105",
+    "link_id_list": [
+      "A2256W000952"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3218.97208,
+      964.5863836,
+      31.20853294
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000107",
+    "link_id_list": [
+      "A2256W000934"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3017.215766,
+      507.5356469,
+      30.22338089
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000108",
+    "link_id_list": [
+      "A2256W000953"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3216.779686,
+      563.9980169,
+      32.72542792
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000109",
+    "link_id_list": [
+      "A2256W000398"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2753.37687,
+      504.1264356,
+      33.35063751
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000110",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3085.475792,
+      560.7815485,
+      30.70891693
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000112",
+    "link_id_list": [
+      "A2256W000975"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2669.845,
+      308.6331259,
+      31.31348228
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000119",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2687.449546,
+      557.5601996,
+      32.31872886
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000121",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3190.21147,
+      1123.529215,
+      32.39294228
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000123",
+    "link_id_list": [
+      "A2256W000896"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2869.087641,
+      507.6891513,
+      31.68731289
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000125",
+    "link_id_list": [
+      "A2256W000813"
+    ],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3148.079142,
+      286.5712395,
+      30.82915824
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000129",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2820.690292,
+      1030.194222,
+      30.84753942
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000130",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2891.290139,
+      1012.21065,
+      30.08468383
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000131",
+    "link_id_list": [
+      "A2256W000896"
+    ],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2801.463309,
+      514.3198545,
+      30.25578679
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000133",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2910.196219,
+      999.0386338,
+      30.77267415
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000134",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2904.623358,
+      1030.254222,
+      30.0873729
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000135",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2891.265635,
+      1012.263553,
+      30.82386345
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000136",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2910.216087,
+      999.0561577,
+      30.01696491
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000137",
+    "link_id_list": [
+      "A2256W000534"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2667.708241,
+      509.1552939,
+      31.23378785
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000138",
+    "link_id_list": [
+      "A2256W000534"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2667.867691,
+      552.4005169,
+      31.32011592
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000142",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2817.827169,
+      980.8532032,
+      31.16858216
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000143",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2857.394879,
+      1038.297701,
+      30.77401672
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000144",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2843.778973,
+      987.8339465,
+      31.04368525
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000145",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2743.033712,
+      841.9168202,
+      30.39222194
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000147",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2945.123243,
+      787.1480123,
+      30.99891209
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000148",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2927.82458,
+      765.1024601,
+      30.40334208
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000150",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2838.937426,
+      1017.575243,
+      30.95994964
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000153",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2821.539616,
+      950.8556784,
+      31.0100928
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000154",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2834.733741,
+      928.0665208,
+      30.841264
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000155",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2904.656135,
+      1030.290518,
+      30.78500753
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000157",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2859.07306,
+      1011.557103,
+      30.78005004
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000158",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2838.520325,
+      1052.235532,
+      30.80395313
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000160",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2948.871836,
+      853.1670049,
+      30.80934028
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000169",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3002.113642,
+      794.6029195,
+      30.6330362
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000170",
+    "link_id_list": [
+      "A2256W000953"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3216.797318,
+      564.001287,
+      31.30005873
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000171",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2853.911597,
+      977.3115847,
+      31.19423766
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000172",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2865.468698,
+      970.1435692,
+      31.07534717
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000173",
+    "link_id_list": [
+      "A2256W000983"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2673.464255,
+      614.4029139,
+      31.10436206
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000174",
+    "link_id_list": [
+      "A2256W000983"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2669.436309,
+      754.9580228,
+      31.30071526
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000175",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3209.741718,
+      1091.665405,
+      31.66477123
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000194",
+    "link_id_list": [
+      "A2256W001060"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2732.364926,
+      484.3273042,
+      31.00160272
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000197",
+    "link_id_list": [
+      "A2256W000896"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2869.080037,
+      507.6951221,
+      30.45252593
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000198",
+    "link_id_list": [
+      "A2256W001034"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2551.799543,
+      509.0985587,
+      32.26307129
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000199",
+    "link_id_list": [
+      "A2256W000616"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2585.783728,
+      480.5818051,
+      31.98001835
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000200",
+    "link_id_list": [
+      "A2256W000398"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2753.454983,
+      504.1022008,
+      32.04131041
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000209",
+    "link_id_list": [
+      "A2256W000930"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "214",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2784.784799,
+      589.0574325,
+      31.26909679
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000210",
+    "link_id_list": [
+      "A2256W000894"
+    ],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2951.592274,
+      519.1405725,
+      30.799243
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000211",
+    "link_id_list": [
+      "A2256W000934"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2997.312818,
+      508.5501421,
+      28.9670716
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000212",
+    "link_id_list": [
+      "A2256W000930"
+    ],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2784.781568,
+      589.0444288,
+      30.51298742
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000214",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "214",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2853.089937,
+      524.3991002,
+      30.70738318
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000216",
+    "link_id_list": [
+      "A2256W001045"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2598.470937,
+      468.7144314,
+      32.31386266
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000218",
+    "link_id_list": [
+      "A2256W001034"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2554.845434,
+      511.5238034,
+      31.64471706
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000219",
+    "link_id_list": [
+      "A2256W000630"
+    ],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2767.614142,
+      515.2513459,
+      30.26433521
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000220",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2886.65438,
+      842.0254022,
+      30.72025939
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000227",
+    "link_id_list": [
+      "A2256W001062"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3076.88144,
+      495.3356837,
+      31.04928223
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000228",
+    "link_id_list": [
+      "A2256W001062"
+    ],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3076.881576,
+      495.3310974,
+      31.6773703
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000231",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2949.305202,
+      812.054304,
+      30.76767681
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000232",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2852.373864,
+      979.6824151,
+      34.69179458
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000236",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2852.180718,
+      979.9923116,
+      34.68104768
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000239",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3008.691516,
+      855.4464856,
+      31.01622251
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000240",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2999.849793,
+      844.7464923,
+      31.09162634
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000041",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2709.150533,
+      1686.975182,
+      30.4871347
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000067",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3175.55608,
+      1673.524818,
+      31.13921105
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000068",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3006.31335,
+      1874.032456,
+      30.82411597
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000069",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3127.101939,
+      1292.431098,
+      31.79301061
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000070",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3127.090569,
+      1292.431442,
+      31.16535205
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000083",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2850.528507,
+      1193.016386,
+      31.19402829
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000089",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3129.389312,
+      1692.172344,
+      31.20431254
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000090",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3129.395167,
+      1692.171445,
+      31.84302154
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000091",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3127.963892,
+      1492.3047,
+      31.26399705
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000092",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3127.926199,
+      1492.305128,
+      31.8387779
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000122",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3175.518666,
+      1673.517149,
+      31.94775034
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000132",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2846.747766,
+      1264.633016,
+      30.7481622
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000141",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2850.508089,
+      1193.017828,
+      31.68176622
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000146",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2910.990486,
+      1643.11675,
+      30.73786408
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000149",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2896.567922,
+      1629.563762,
+      30.68083276
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000151",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2897.195907,
+      1657.486888,
+      30.64775841
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000152",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2883.123919,
+      1643.001955,
+      30.57197675
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000156",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2866.667101,
+      1300.029096,
+      30.81365264
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000159",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2838.935371,
+      1290.508847,
+      30.76450981
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000176",
+    "link_id_list": [
+      "A2256W000872"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3211.343712,
+      1575.016659,
+      31.05028299
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000213",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2841.945537,
+      1672.038454,
+      30.85090192
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000215",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "399",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2910.494351,
+      1710.240192,
+      30.72529183
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000217",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2916.396997,
+      1289.265439,
+      30.76896752
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000221",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2906.448636,
+      1289.129106,
+      30.7849913
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000222",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "indication",
+    "sub_type": "228",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2946.038597,
+      1405.154846,
+      30.8175773
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000233",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2789.381027,
+      1392.580834,
+      33.8695951
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000234",
+    "link_id_list": [
+      "A2256W000734"
+    ],
+    "road_id": "",
+    "type": "warning",
+    "sub_type": "199",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3318.328184,
+      1691.403629,
+      32.22381692
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.73,
+    "width": 0.9,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000237",
+    "link_id_list": [
+      "A2256W000734"
+    ],
+    "road_id": "",
+    "type": "marker",
+    "sub_type": "499",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -3318.267807,
+      1691.483154,
+      28.99398656
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.4,
+    "width": 0.4,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  },
+  {
+    "idx": "B1256W000238",
+    "link_id_list": [],
+    "road_id": "",
+    "type": "regulatory",
+    "sub_type": "299",
+    "dynamic": false,
+    "orientation": "+",
+    "point": [
+      -2947.616871,
+      1287.918303,
+      30.87108137
+    ],
+    "value": 0.0,
+    "country": "KR",
+    "z_offset": 2.1,
+    "height": 0.6,
+    "width": 0.6,
+    "type_def": "mgeo",
+    "ref_crosswalk_id": "",
+    "heading": 0.0,
+    "info": ""
+  }
+]
