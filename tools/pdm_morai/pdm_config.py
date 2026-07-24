@@ -7,6 +7,9 @@ from dataclasses import dataclass, field
 import numpy as np
 
 
+PDM_PROFILE_CHOICES = ("normal", "mad-max", "beginner", "idiot")
+
+
 @dataclass
 class PdmLiteMoraiConfig:
     """CARLA-free subset of pdm_lite.team_code.config.GlobalConfig."""
@@ -124,3 +127,87 @@ class PdmLiteMoraiConfig:
     @property
     def lateral_pid_maximum_lookahead_distance(self) -> float:
         return 18.0 * self.points_per_meter
+
+
+def apply_pdm_profile(config: PdmLiteMoraiConfig, profile: str) -> None:
+    if profile == "normal":
+        return
+    if profile == "mad-max":
+        config.route_speed_limit_ratio = 1.10
+        config.curve_lateral_accel_limit = 4.0
+        config.target_speed_increase_rate = 5.0
+        config.target_speed_decrease_rate = 1.5
+        config.leading_vehicle_time_gap = 0.35
+        config.leading_vehicle_min_gap = 1.5
+        config.leading_vehicle_lateral_window = 1.1
+        config.leading_vehicle_max_distance = 25.0
+        config.leading_vehicle_idm_acceleration = 3.5
+        config.leading_vehicle_idm_deceleration = 1.2
+        config.leading_vehicle_idm_horizon = 0.4
+        config.leading_vehicle_emergency_ttc = 0.25
+        config.overspeed_brake_margin = 2.0
+        config.overspeed_brake_gain = 0.10
+        config.max_steer_high_speed = 0.45
+        config.steer_rate_limit = 4.0
+        config.throttle_increase_rate = 5.0
+        config.throttle_decrease_rate = 5.0
+        config.brake_increase_rate = 1.2
+        config.brake_decrease_rate = 6.0
+        return
+    if profile == "beginner":
+        config.route_speed_limit_ratio = 0.45
+        config.curve_lateral_accel_limit = 0.9
+        config.target_speed_increase_rate = 0.6
+        config.target_speed_decrease_rate = 1.6
+        config.leading_vehicle_time_gap = 2.8
+        config.leading_vehicle_min_gap = 15.0
+        config.leading_vehicle_lateral_window = 3.0
+        config.leading_vehicle_max_distance = 90.0
+        config.leading_vehicle_idm_acceleration = 0.7
+        config.leading_vehicle_idm_deceleration = 2.0
+        config.leading_vehicle_idm_horizon = 1.8
+        config.leading_vehicle_emergency_ttc = 2.0
+        config.overspeed_brake_margin = 0.05
+        config.overspeed_brake_gain = 0.55
+        config.max_steer_high_speed = 0.18
+        config.steer_rate_limit = 0.35
+        config.throttle_increase_rate = 0.5
+        config.throttle_decrease_rate = 1.0
+        config.brake_increase_rate = 1.2
+        config.brake_decrease_rate = 1.8
+        return
+    if profile == "idiot":
+        config.route_speed_limit_ratio = 0.95
+        config.curve_lateral_accel_limit = 2.8
+        config.target_speed_increase_rate = 2.8
+        config.target_speed_decrease_rate = 0.5
+        config.leading_vehicle_time_gap = 0.1
+        config.leading_vehicle_min_gap = 0.5
+        config.leading_vehicle_lateral_window = 0.65
+        config.leading_vehicle_max_distance = 12.0
+        config.leading_vehicle_idm_acceleration = 2.0
+        config.leading_vehicle_idm_deceleration = 0.8
+        config.leading_vehicle_idm_horizon = 0.25
+        config.leading_vehicle_emergency_ttc = 0.12
+        config.overspeed_brake_margin = 3.0
+        config.overspeed_brake_gain = 0.04
+        config.max_steer_high_speed = 0.22
+        config.steer_rate_limit = 0.25
+        config.throttle_increase_rate = 2.5
+        config.throttle_decrease_rate = 0.6
+        config.brake_increase_rate = 0.35
+        config.brake_decrease_rate = 1.0
+        return
+    raise ValueError(f"Unknown PDM profile: {profile}")
+
+
+def pdm_profile_target_speed_scale(profile: str) -> float:
+    if profile == "normal":
+        return 1.0
+    if profile == "mad-max":
+        return 1.35
+    if profile == "beginner":
+        return 0.60
+    if profile == "idiot":
+        return 1.10
+    raise ValueError(f"Unknown PDM profile: {profile}")

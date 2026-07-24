@@ -11,11 +11,16 @@ from unittest.mock import Mock, patch
 import numpy as np
 
 from tools.pdm_morai_control import (
+    ActiveScenarioChanged,
     DEFAULT_ATTACH_MGEO_DIR,
+    ScenarioBoundaryDetected,
+    bootstrap_fixed_tcp_ego,
     build_parser,
     build_runtime_settings,
     configure_fixed_step,
+    fixed_step_and_wait_for_ego,
     fixed_time_status_matches,
+    hold_for_sim_scenario_transition,
     is_new_state_sample,
     main,
     parse_runtime_args,
@@ -26,6 +31,12 @@ from tools.pdm_morai_control import (
     select_runtime_mode,
     should_stop_before_start,
     variable_time_status_matches,
+    verify_suite_preflight,
+)
+from pdm_morai.pdm_config import (
+    PdmLiteMoraiConfig,
+    apply_pdm_profile,
+    pdm_profile_target_speed_scale,
 )
 from pdm_morai.morai_tcp import MoraiTcpError, TIME_MODE_FIXED, TIME_MODE_VARIABLE
 
@@ -40,7 +51,32 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         self.assertFalse(args.load_suite)
         self.assertFalse(args.scenario_play)
         self.assertFalse(args.scenario_stop)
+        self.assertEqual(args.pdm_profile, "normal")
+        self.assertEqual(args.scenario_transition_wait, 3.0)
         self.assertEqual(select_runtime_mode(args), "gui:variable-udp")
+
+    def test_pdm_profiles_patch_behavior_parameters(self) -> None:
+        normal = PdmLiteMoraiConfig()
+        mad_max = PdmLiteMoraiConfig()
+        beginner = PdmLiteMoraiConfig()
+        idiot = PdmLiteMoraiConfig()
+
+        apply_pdm_profile(mad_max, "mad-max")
+        apply_pdm_profile(beginner, "beginner")
+        apply_pdm_profile(idiot, "idiot")
+
+        self.assertLess(mad_max.leading_vehicle_time_gap, normal.leading_vehicle_time_gap)
+        self.assertGreater(mad_max.throttle_increase_rate, normal.throttle_increase_rate)
+        self.assertLess(beginner.route_speed_limit_ratio, normal.route_speed_limit_ratio)
+        self.assertGreater(beginner.leading_vehicle_min_gap, normal.leading_vehicle_min_gap)
+        self.assertLess(idiot.leading_vehicle_lateral_window, normal.leading_vehicle_lateral_window)
+        self.assertLess(idiot.brake_increase_rate, normal.brake_increase_rate)
+
+    def test_pdm_profile_target_speed_scales_are_distinct(self) -> None:
+        self.assertEqual(pdm_profile_target_speed_scale("normal"), 1.0)
+        self.assertGreater(pdm_profile_target_speed_scale("mad-max"), 1.0)
+        self.assertLess(pdm_profile_target_speed_scale("beginner"), 1.0)
+        self.assertGreater(pdm_profile_target_speed_scale("idiot"), 1.0)
 
     def test_attach_only_uses_runtime_defaults(self) -> None:
         args = build_parser().parse_args([])
@@ -110,14 +146,9 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         self.assertFalse(args.scenario_play)
 
     def test_control_modes_select_transport_independently(self) -> None:
-        fixed_auto_udp = parse_runtime_args(["--control-mode", "fixed-auto-udp"])
         fixed_udp = parse_runtime_args(["--control-mode", "fixed-udp"])
         lockstep = parse_runtime_args(["--control-mode", "fixed-tcp-lockstep"])
 
-        self.assertFalse(fixed_auto_udp.fixed_step)
-        self.assertEqual(fixed_auto_udp.fixed_control_transport, "udp")
-        self.assertEqual(fixed_auto_udp.rtf, 1)
-        self.assertEqual(fixed_auto_udp.user_control, 0)
         self.assertTrue(fixed_udp.fixed_step)
         self.assertEqual(fixed_udp.fixed_control_transport, "udp")
         self.assertTrue(lockstep.fixed_step)
@@ -161,6 +192,13 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
 
         ego.stamp_nanos = 40_000_000
         self.assertTrue(is_new_state_sample(ego, (1, 20_000_000)))
+
+        ego.stamp_seconds = 2
+        ego.stamp_nanos = 1
+        self.assertTrue(is_new_state_sample(ego, (1, 999_999_999)))
+
+        ego.stamp_seconds = 1
+        self.assertFalse(is_new_state_sample(ego, (2, 1)))
 
     def test_fixed_step_control_waits_for_tcp_ack(self) -> None:
         udp = Mock()
@@ -217,6 +255,380 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
                 control=Mock(),
             )
 
+    def test_fixed_step_wait_uses_ack_save_status_then_advanced_udp_stamp(self) -> None:
+        previous = SimpleNamespace(stamp_seconds=1, stamp_nanos=999_999_999)
+        advanced = SimpleNamespace(stamp_seconds=2, stamp_nanos=1)
+        udp = SimpleNamespace(
+            states={"Ego": previous},
+            poll=Mock(),
+            rx_records=1,
+            rx_chunks=0,
+            invalid_packets=0,
+        )
+        udp.poll.side_effect = lambda: udp.states.__setitem__("Ego", advanced)
+        tcp = Mock()
+        tcp.fixed_step.return_value = {"result_code": 0, "detail_code": 0}
+        tcp.save_data.return_value = {"result_code": 0, "detail_code": 0}
+        tcp.active_suite_status.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+            "active_suite_name": "Suite",
+            "active_scenario_name": "Scenario A",
+            "scenario_list": ["Scenario A"],
+        }
+        tcp.scenario_status.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+            "state": 1,
+        }
+
+        ego, fixed_result, save_result = fixed_step_and_wait_for_ego(
+            tcp=tcp,
+            udp=udp,
+            previous_stamp=(1, 999_999_999),
+            timeout=1.0,
+            status_period=1.0,
+            save_data_each_step=True,
+            ego_candidates=("Ego",),
+            expected_scenario_name="Scenario A",
+        )
+
+        self.assertIs(ego, advanced)
+        self.assertEqual(fixed_result["result_code"], 0)
+        self.assertEqual(save_result["result_code"], 0)
+        self.assertEqual(
+            [call[0] for call in tcp.method_calls],
+            ["fixed_step", "save_data", "active_suite_status", "scenario_status"],
+        )
+
+    def test_fixed_step_ack_failure_stops_before_save_status_and_udp_poll(self) -> None:
+        tcp = Mock()
+        tcp.fixed_step.return_value = {"result_code": 1, "detail_code": 9}
+        udp = Mock()
+
+        with self.assertRaisesRegex(MoraiTcpError, r"FixedStep\(1\) failed"):
+            fixed_step_and_wait_for_ego(
+                tcp=tcp,
+                udp=udp,
+                previous_stamp=(1, 0),
+                timeout=1.0,
+                status_period=1.0,
+                save_data_each_step=True,
+                ego_candidates=("Ego",),
+            )
+
+        tcp.save_data.assert_not_called()
+        tcp.scenario_status.assert_not_called()
+        udp.poll.assert_not_called()
+
+    def test_fixed_tcp_bootstrap_steps_before_first_manual_control(self) -> None:
+        ego = SimpleNamespace(stamp_seconds=0, stamp_nanos=20_000_000)
+        udp = SimpleNamespace(
+            states={},
+            poll=Mock(),
+            rx_records=0,
+            rx_chunks=0,
+            rx_datagrams=0,
+            invalid_packets=0,
+            packet_sizes=[],
+            last_error=None,
+        )
+
+        def publish_after_step() -> None:
+            if udp.poll.call_count >= 2:
+                udp.states["Ego"] = ego
+                udp.rx_records = 1
+
+        udp.poll.side_effect = publish_after_step
+        tcp = Mock()
+        tcp.manual_control_by_id.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+        }
+        tcp.fixed_step.return_value = {"result_code": 0, "detail_code": 0}
+        tcp.save_data.return_value = {"result_code": 0, "detail_code": 0}
+        tcp.scenario_status.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+            "state": 1,
+        }
+
+        result, fixed_result, save_result = bootstrap_fixed_tcp_ego(
+            tcp=tcp,
+            udp=udp,
+            ego_id="Ego",
+            timeout=1.0,
+            status_period=1.0,
+            save_data_each_step=True,
+            ego_candidates=("Ego",),
+            send_control=True,
+        )
+
+        self.assertIs(result, ego)
+        self.assertEqual(fixed_result["result_code"], 0)
+        self.assertEqual(save_result["result_code"], 0)
+        self.assertEqual(
+            [call[0] for call in tcp.method_calls],
+            ["fixed_step", "save_data", "scenario_status"],
+        )
+
+    def test_fixed_tcp_bootstrap_skips_step_when_initial_ego_exists(self) -> None:
+        ego = SimpleNamespace(stamp_seconds=0, stamp_nanos=0)
+        udp = SimpleNamespace(
+            states={"Ego": ego},
+            poll=Mock(),
+            rx_records=1,
+            rx_chunks=0,
+            rx_datagrams=1,
+            invalid_packets=0,
+            packet_sizes=[108],
+            last_error=None,
+        )
+        tcp = Mock()
+
+        result, fixed_result, save_result = bootstrap_fixed_tcp_ego(
+            tcp=tcp,
+            udp=udp,
+            ego_id="Ego",
+            timeout=1.0,
+            status_period=1.0,
+            save_data_each_step=True,
+            ego_candidates=("Ego",),
+            send_control=True,
+        )
+
+        self.assertIs(result, ego)
+        self.assertIsNone(fixed_result)
+        self.assertIsNone(save_result)
+        tcp.manual_control_by_id.assert_not_called()
+        tcp.fixed_step.assert_not_called()
+
+    def test_transition_bootstrap_discards_old_ego_and_forces_one_step(self) -> None:
+        old_ego = SimpleNamespace(stamp_seconds=44, stamp_nanos=460_000_000)
+        new_ego = SimpleNamespace(stamp_seconds=0, stamp_nanos=20_000_000)
+        udp = SimpleNamespace(
+            states={"Ego": old_ego},
+            poll=Mock(),
+            rx_records=1,
+            rx_chunks=0,
+            rx_datagrams=1,
+            invalid_packets=0,
+            packet_sizes=[108],
+            last_error=None,
+        )
+
+        def publish_new_ego() -> None:
+            if udp.poll.call_count >= 2:
+                udp.states["Ego"] = new_ego
+                udp.rx_records = 2
+
+        udp.poll.side_effect = publish_new_ego
+        tcp = Mock()
+        tcp.manual_control_by_id.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+        }
+        tcp.fixed_step.return_value = {"result_code": 0, "detail_code": 0}
+        tcp.scenario_status.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+            "state": 1,
+        }
+
+        result, fixed_result, _save_result = bootstrap_fixed_tcp_ego(
+            tcp=tcp,
+            udp=udp,
+            ego_id="Ego",
+            timeout=1.0,
+            status_period=1.0,
+            save_data_each_step=False,
+            ego_candidates=("Ego",),
+            send_control=True,
+            force_step=True,
+        )
+
+        self.assertIs(result, new_ego)
+        self.assertEqual(fixed_result["result_code"], 0)
+        tcp.manual_control_by_id.assert_not_called()
+        tcp.fixed_step.assert_called_once_with(1)
+
+    @patch("tools.pdm_morai_control.time.sleep")
+    @patch("tools.pdm_morai_control.time.monotonic", side_effect=[0.0, 2.0])
+    def test_fixed_step_wait_rejects_nonadvancing_udp_stamp(
+        self,
+        _monotonic: Mock,
+        _sleep: Mock,
+    ) -> None:
+        ego = SimpleNamespace(stamp_seconds=3, stamp_nanos=10)
+        udp = SimpleNamespace(
+            states={"Ego": ego},
+            poll=Mock(),
+            rx_records=1,
+            rx_chunks=0,
+            invalid_packets=0,
+        )
+        tcp = Mock()
+        tcp.fixed_step.return_value = {"result_code": 0, "detail_code": 0}
+        tcp.scenario_status.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+            "state": 1,
+        }
+
+        with self.assertRaisesRegex(RuntimeError, "fixed_ack_udp_wait_timeout"):
+            fixed_step_and_wait_for_ego(
+                tcp=tcp,
+                udp=udp,
+                previous_stamp=(3, 10),
+                timeout=1.0,
+                status_period=1.0,
+                save_data_each_step=False,
+                ego_candidates=("Ego",),
+            )
+
+    def test_fixed_step_detects_sim_owned_active_scenario_change(self) -> None:
+        tcp = Mock()
+        tcp.fixed_step.return_value = {"result_code": 0, "detail_code": 0}
+        tcp.active_suite_status.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+            "active_suite_name": "Suite",
+            "active_scenario_name": "Scenario B",
+            "scenario_list": ["Scenario A", "Scenario B"],
+        }
+        tcp.scenario_status.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+            "state": 1,
+        }
+        udp = Mock()
+
+        with self.assertRaises(ActiveScenarioChanged) as raised:
+            fixed_step_and_wait_for_ego(
+                tcp=tcp,
+                udp=udp,
+                previous_stamp=(12, 340_000_000),
+                timeout=1.0,
+                status_period=1.0,
+                save_data_each_step=False,
+                ego_candidates=("Ego",),
+                expected_scenario_name="Scenario A",
+            )
+
+        self.assertEqual(raised.exception.previous_name, "Scenario A")
+        self.assertEqual(raised.exception.active_name, "Scenario B")
+        self.assertEqual(
+            [call[0] for call in tcp.method_calls],
+            ["fixed_step", "active_suite_status", "scenario_status"],
+        )
+        udp.poll.assert_not_called()
+
+    def test_fixed_step_timeout_recovers_when_sim_already_changed_scenario(self) -> None:
+        tcp = Mock()
+        tcp.fixed_step.side_effect = TimeoutError("timed out")
+        tcp.active_suite_status.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+            "active_suite_name": "Suite",
+            "active_scenario_name": "Scenario B",
+            "scenario_list": ["Scenario A", "Scenario B"],
+        }
+        tcp.scenario_status.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+            "state": 1,
+        }
+        udp = Mock()
+
+        with self.assertRaises(ActiveScenarioChanged) as raised:
+            fixed_step_and_wait_for_ego(
+                tcp=tcp,
+                udp=udp,
+                previous_stamp=(20, 0),
+                timeout=20.0,
+                status_period=1.0,
+                save_data_each_step=True,
+                ego_candidates=("Ego",),
+                expected_scenario_name="Scenario A",
+            )
+
+        self.assertEqual(raised.exception.active_name, "Scenario B")
+        tcp.close.assert_called_once_with()
+        tcp.open.assert_called_once_with()
+        tcp.active_suite_status.assert_called_once_with()
+        tcp.scenario_status.assert_called_once_with()
+        tcp.save_data.assert_not_called()
+        udp.poll.assert_not_called()
+
+    def test_fixed_step_stops_stepping_immediately_at_scenario_boundary(self) -> None:
+        ego = SimpleNamespace(stamp_seconds=20, stamp_nanos=0)
+        udp = SimpleNamespace(
+            states={"Ego": ego},
+            poll=Mock(),
+            rx_records=1000,
+            rx_chunks=0,
+            invalid_packets=0,
+        )
+        tcp = Mock()
+        tcp.fixed_step.return_value = {"result_code": 0, "detail_code": 0}
+        tcp.active_suite_status.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+            "active_suite_name": "Suite",
+            "active_scenario_name": "Scenario A",
+            "scenario_list": ["Scenario A", "Scenario B"],
+        }
+        tcp.scenario_status.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+            "state": 3,
+        }
+
+        with self.assertRaises(ScenarioBoundaryDetected):
+            fixed_step_and_wait_for_ego(
+                tcp=tcp,
+                udp=udp,
+                previous_stamp=(20, 0),
+                timeout=20.0,
+                status_period=1.0,
+                save_data_each_step=False,
+                ego_candidates=("Ego",),
+                expected_scenario_name="Scenario A",
+            )
+
+        tcp.active_suite_status.assert_called_once_with()
+        tcp.scenario_status.assert_called_once_with()
+        udp.poll.assert_not_called()
+
+    def test_transition_hold_confirms_new_name_and_discards_cached_udp(self) -> None:
+        udp = SimpleNamespace(states={"Ego": object()}, poll=Mock())
+        tcp = Mock()
+        tcp.active_suite_status.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+            "active_suite_name": "Suite",
+            "active_scenario_name": "Scenario B",
+            "scenario_list": ["Scenario A", "Scenario B"],
+        }
+        tcp.scenario_status.return_value = {
+            "result_code": 0,
+            "detail_code": 0,
+            "state": 1,
+        }
+
+        change = hold_for_sim_scenario_transition(
+            tcp=tcp,
+            udp=udp,
+            previous_name="Scenario A",
+            timeout=0.0,
+            status_period=1.0,
+        )
+
+        self.assertIsNotNone(change)
+        self.assertEqual(change.active_name, "Scenario B")
+        self.assertEqual(udp.states, {})
+        self.assertEqual(udp.poll.call_count, 1)
+
     def test_route_is_built_from_runtime_ego_pose(self) -> None:
         route = Mock()
         route.route_points = np.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]])
@@ -243,6 +655,23 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         args = build_parser().parse_args(["--scenario-play"])
 
         self.assertFalse(should_stop_before_start(args))
+
+    def test_explicit_play_allows_fixed_bootstrap_from_stopped_state(self) -> None:
+        args = build_parser().parse_args(
+            ["--control-mode", "fixed-tcp-lockstep", "--scenario-play"]
+        )
+
+        result = verify_suite_preflight(
+            args=args,
+            binding=None,
+            active_status={
+                "active_suite_name": "Suite",
+                "active_scenario_name": "Scenario",
+            },
+            scenario_status={"result_code": 0, "detail_code": 0, "state": 3},
+        )
+
+        self.assertTrue(result)
 
     @patch("tools.pdm_morai_control.stop_before_start")
     @patch("tools.pdm_morai_control.wait_for_udp_ready")
@@ -360,12 +789,13 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         route_class.assert_not_called()
         tcp.load_suite.assert_not_called()
         tcp.scenario_control.assert_not_called()
+        self.assertTrue(wait_udp_mock.call_args.kwargs["require_stamp_advance"])
 
     @patch("tools.pdm_morai_control.wait_for_udp_ready")
     @patch("tools.pdm_morai_control.MGeoRoutePlanner")
     @patch("tools.pdm_morai_control.MoraiUdpClient")
     @patch("tools.pdm_morai_control.MoraiTcpClient")
-    def test_udp_preflight_failure_stops_before_fixed_loop(
+    def test_fixed_tcp_bootstrap_failure_stops_before_control_loop(
         self,
         tcp_class: Mock,
         udp_class: Mock,
@@ -390,6 +820,7 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         }
         tcp.scenario_status.return_value = {"result_code": 0, "detail_code": 0, "state": 1}
         tcp.set_simulation_time_mode.return_value = {"result_code": 0, "detail_code": 0}
+        tcp.fixed_step.return_value = {"result_code": 1, "detail_code": 9}
         wait_udp_mock.return_value = False
         udp = udp_class.return_value
         udp.states = {}
@@ -416,84 +847,8 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         )
 
         self.assertEqual(result, 2)
-        tcp.fixed_step.assert_not_called()
-
-    @patch("tools.pdm_morai_control.wait_for_udp_ready")
-    @patch("tools.pdm_morai_control.MGeoRoutePlanner")
-    @patch("tools.pdm_morai_control.MoraiUdpClient")
-    @patch("tools.pdm_morai_control.MoraiTcpClient")
-    def test_fixed_auto_udp_configures_fixed_time_without_fixed_step(
-        self,
-        tcp_class: Mock,
-        udp_class: Mock,
-        _route_class: Mock,
-        wait_udp_mock: Mock,
-    ) -> None:
-        tcp = tcp_class.return_value
-        applied = {
-            "mode": TIME_MODE_FIXED,
-            "target_fps": 50,
-            "physics_delta_time": 20,
-            "rtf": 1,
-            "user_control": 0,
-            "step_index": 0,
-            "seconds": 0,
-            "nanos": 0,
-        }
-        tcp.get_simulation_time_status.side_effect = [
-            {"mode": TIME_MODE_VARIABLE},
-            applied,
-            applied,
-        ]
-        tcp.active_suite_status.return_value = {
-            "active_suite_name": "Suite",
-            "active_scenario_name": "Scenario",
-            "scenario_list": ["Scenario"],
-        }
-        tcp.scenario_status.return_value = {
-            "result_code": 0,
-            "detail_code": 0,
-            "state": 1,
-        }
-        tcp.set_simulation_time_mode.return_value = {
-            "result_code": 0,
-            "detail_code": 0,
-        }
-        wait_udp_mock.return_value = False
-        udp = udp_class.return_value
-        udp.states = {}
-        udp.rx_records = 0
-        udp.rx_chunks = 0
-        udp.invalid_packets = 0
-        udp.tx_packets = 0
-        udp.rx_datagrams = 0
-        udp.packet_sizes = []
-        udp.last_error = None
-
-        result = main(
-            [
-                "--control-mode",
-                "fixed-auto-udp",
-                "--tcp-port",
-                "20000",
-                "--tcp-settle",
-                "0",
-                "--no-send",
-            ]
-        )
-
-        self.assertEqual(result, 2)
-        tcp.set_simulation_time_mode.assert_called_once_with(
-            TIME_MODE_FIXED,
-            50,
-            20,
-            1,
-            0,
-        )
-        tcp.fixed_step.assert_not_called()
-        wait_udp_mock.assert_called_once()
-        self.assertIsNone(wait_udp_mock.call_args[0][1])
-        self.assertFalse(wait_udp_mock.call_args[1]["fixed_step"])
+        tcp.fixed_step.assert_called_once_with(1)
+        wait_udp_mock.assert_not_called()
 
     def test_fixed_status_matching_uses_milliseconds(self) -> None:
         status = {
@@ -514,12 +869,12 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
             )
         )
 
-    def test_variable_status_matching_accepts_simulator_normalized_rtf(self) -> None:
+    def test_variable_status_matching_requires_api_forced_zero_flags(self) -> None:
         status = {
             "mode": TIME_MODE_VARIABLE,
             "target_fps": 60,
             "physics_delta_time": 20,
-            "rtf": 1,
+            "rtf": 0,
             "user_control": 0,
         }
 
@@ -620,6 +975,42 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         )
 
         configure_fixed_step(tcp, args, 50)
+
+        tcp.set_simulation_time_mode.assert_called_once_with(
+            TIME_MODE_FIXED,
+            50,
+            20,
+            1,
+            1,
+        )
+
+    def test_fixed_step_force_reapply_does_not_trust_stale_matching_status(self) -> None:
+        tcp = Mock()
+        applied = {
+            'mode': TIME_MODE_FIXED,
+            'target_fps': 50,
+            'physics_delta_time': 20,
+            'rtf': 1,
+            'user_control': 1,
+        }
+        tcp.get_simulation_time_status.side_effect = [applied, applied]
+        tcp.set_simulation_time_mode.return_value = {
+            'result_code': 0,
+            'detail_code': 0,
+        }
+        args = build_parser().parse_args(
+            [
+                '--fixed-step',
+                '--tcp-port',
+                '20000',
+                '--fixed-target-fps',
+                '50',
+                '--physics-delta-time',
+                '20',
+            ]
+        )
+
+        configure_fixed_step(tcp, args, 50, force_reapply=True)
 
         tcp.set_simulation_time_mode.assert_called_once_with(
             TIME_MODE_FIXED,

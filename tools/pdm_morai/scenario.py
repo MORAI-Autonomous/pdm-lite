@@ -242,7 +242,12 @@ def _load_interface_files(
         template = str(iface.get("messageTemplateFileName") or "").lower()
         if "manual" in name or direction == "RECEIVE" or "manual" in template:
             interfaces["manual"] = data
-        if "vehicle info" in name or direction == "SEND" or "vehicle info" in template:
+        if (
+            "vehicle info" in name
+            or "veihlce info" in name
+            or "vehicle info" in template
+            or "veihlce info" in template
+        ):
             interfaces["feedback"] = data
     return interfaces
 
