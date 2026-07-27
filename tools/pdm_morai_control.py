@@ -111,7 +111,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--control-mode",
-        choices=["variable-udp", "fixed-udp", "fixed-tcp-lockstep"],
+        choices=[
+            "variable-udp",
+            "fixed-auto-udp",
+            "fixed-udp",
+            "fixed-tcp-lockstep",
+        ],
         default="variable-udp",
         help=(
             "Runtime control behavior. GUI/headless are not control modes."
@@ -365,6 +370,11 @@ def normalize_runtime_modes(
     if args.control_mode == "variable-udp":
         args.fixed_step = False
         args.fixed_control_transport = "udp"
+    elif args.control_mode == "fixed-auto-udp":
+        args.fixed_step = False
+        args.fixed_control_transport = "udp"
+        args.rtf = 1
+        args.user_control = 0
     elif args.control_mode == "fixed-udp":
         args.fixed_step = True
         args.fixed_control_transport = "udp"
@@ -382,6 +392,10 @@ def parse_runtime_args(argv: list[str] | None = None) -> argparse.Namespace:
         control_mode_explicit=_option_present(argv, "--control-mode"),
     )
     return args
+
+
+def uses_fixed_time_mode(args: argparse.Namespace) -> bool:
+    return args.fixed_step or args.control_mode != "variable-udp"
 
 
 @dataclass(frozen=True)
@@ -1587,6 +1601,19 @@ def rebuild_route_from_runtime_pose(
     return "MGeo runtime Ego pose route"
 
 
+def is_inside_drivable_area(
+    route: MGeoRoutePlanner,
+    x: float,
+    y: float,
+) -> bool:
+    drivable_area = getattr(route, "drivable_area", None)
+    if drivable_area is None:
+        # Older MGeoRoutePlanner data has no polygon index. In that case retain
+        # the established route-distance guard instead of failing at runtime.
+        return True
+    return bool(drivable_area.contains(x, y))
+
+
 def fixed_time_status_matches(
     status: dict[str, Any],
     *,
@@ -1614,7 +1641,6 @@ def variable_time_status_matches(
         status.get("mode") == TIME_MODE_VARIABLE
         and status.get("target_fps") == control_hz
         and status.get("physics_delta_time") == physics_delta_time
-        and status.get("rtf") == 0
         and status.get("user_control") == 0
     )
 
@@ -1638,7 +1664,11 @@ def resolve_sut_timing(
 
     control_hz = max(
         1,
-        int(args.fixed_target_fps) if args.fixed_step else int(default_control_hz),
+        (
+            int(args.fixed_target_fps)
+            if uses_fixed_time_mode(args)
+            else int(default_control_hz)
+        ),
     )
     return control_hz, 1.0 / float(control_hz)
 
@@ -1712,7 +1742,8 @@ def configure_variable_mode(
         return
     if args.rtf != 0 or args.user_control != 0:
         print(
-            "variable_mode_note: TCP API forces rtf=0 and user_control=0 in variable mode; "
+            "variable_mode_note: TCP request uses rtf=0 and user_control=0 in variable mode; "
+            "the simulator may normalize the reported rtf value; "
             f"requested rtf={args.rtf} user_control={args.user_control}"
         )
     set_result = tcp.set_simulation_time_mode(
@@ -1735,7 +1766,7 @@ def configure_variable_mode(
         raise MoraiTcpError(
             "Variable-mode verification failed: "
             f"requested=(fps={control_hz}, physics_delta_time={args.physics_delta_time}, "
-            f"rtf=0, user_control=0), actual={time_status_after}"
+            f"user_control=0; rtf ignored), actual={time_status_after}"
         )
 
 
@@ -2296,6 +2327,13 @@ def main(argv: list[str] | None = None) -> int:
                         "before fixed-tcp-lockstep took ownership of the SIM clock"
                     )
                 configure_fixed_step(tcp, args, control_hz)
+            elif args.control_mode == "fixed-auto-udp":
+                configure_fixed_step(
+                    tcp,
+                    args,
+                    control_hz,
+                    user_control_override=0,
+                )
             elif args.fixed_step:
                 configure_fixed_step(tcp, args, control_hz)
             else:
@@ -2562,7 +2600,7 @@ def main(argv: list[str] | None = None) -> int:
                     print(f"ERROR: {exc}")
                     return 2
 
-            inside_drivable_area = route.drivable_area.contains(ego.x, ego.y)
+            inside_drivable_area = is_inside_drivable_area(route, ego.x, ego.y)
             if (
                 inside_drivable_area
                 and (not route_from_advanced)
@@ -2573,7 +2611,7 @@ def main(argv: list[str] | None = None) -> int:
                 except RuntimeError as exc:
                     print(f"ERROR: {exc}")
                     return 2
-                inside_drivable_area = route.drivable_area.contains(ego.x, ego.y)
+                inside_drivable_area = is_inside_drivable_area(route, ego.x, ego.y)
 
             route_error = route.distance_to_route(ego.x, ego.y)
             if (not inside_drivable_area) or route_error > args.route_max_error:

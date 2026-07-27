@@ -21,6 +21,7 @@ from tools.pdm_morai_control import (
     fixed_step_and_wait_for_ego,
     fixed_time_status_matches,
     hold_for_sim_scenario_transition,
+    is_inside_drivable_area,
     is_new_state_sample,
     main,
     parse_runtime_args,
@@ -42,6 +43,19 @@ from pdm_morai.morai_tcp import MoraiTcpError, TIME_MODE_FIXED, TIME_MODE_VARIAB
 
 
 class AttachOnlyRuntimeTest(unittest.TestCase):
+    def test_missing_drivable_area_uses_route_distance_fallback(self) -> None:
+        route = SimpleNamespace()
+
+        self.assertTrue(is_inside_drivable_area(route, 1.0, 2.0))
+
+    def test_available_drivable_area_is_checked(self) -> None:
+        drivable_area = Mock()
+        drivable_area.contains.return_value = False
+        route = SimpleNamespace(drivable_area=drivable_area)
+
+        self.assertFalse(is_inside_drivable_area(route, 1.0, 2.0))
+        drivable_area.contains.assert_called_once_with(1.0, 2.0)
+
     def test_parser_defaults_to_safe_gui_variable_udp(self) -> None:
         args = build_parser().parse_args([])
 
@@ -146,9 +160,14 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         self.assertFalse(args.scenario_play)
 
     def test_control_modes_select_transport_independently(self) -> None:
+        fixed_auto_udp = parse_runtime_args(["--control-mode", "fixed-auto-udp"])
         fixed_udp = parse_runtime_args(["--control-mode", "fixed-udp"])
         lockstep = parse_runtime_args(["--control-mode", "fixed-tcp-lockstep"])
 
+        self.assertFalse(fixed_auto_udp.fixed_step)
+        self.assertEqual(fixed_auto_udp.fixed_control_transport, "udp")
+        self.assertEqual(fixed_auto_udp.rtf, 1)
+        self.assertEqual(fixed_auto_udp.user_control, 0)
         self.assertTrue(fixed_udp.fixed_step)
         self.assertEqual(fixed_udp.fixed_control_transport, "udp")
         self.assertTrue(lockstep.fixed_step)
@@ -789,7 +808,7 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         route_class.assert_not_called()
         tcp.load_suite.assert_not_called()
         tcp.scenario_control.assert_not_called()
-        self.assertTrue(wait_udp_mock.call_args.kwargs["require_stamp_advance"])
+        self.assertTrue(wait_udp_mock.call_args[1]["require_stamp_advance"])
 
     @patch("tools.pdm_morai_control.wait_for_udp_ready")
     @patch("tools.pdm_morai_control.MGeoRoutePlanner")
@@ -869,12 +888,12 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
             )
         )
 
-    def test_variable_status_matching_requires_api_forced_zero_flags(self) -> None:
+    def test_variable_status_matching_accepts_simulator_normalized_rtf(self) -> None:
         status = {
             "mode": TIME_MODE_VARIABLE,
             "target_fps": 60,
             "physics_delta_time": 20,
-            "rtf": 0,
+            "rtf": 1,
             "user_control": 0,
         }
 
