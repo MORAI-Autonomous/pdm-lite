@@ -170,6 +170,7 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         self.assertEqual(fixed_auto_udp.user_control, 0)
         self.assertTrue(fixed_udp.fixed_step)
         self.assertEqual(fixed_udp.fixed_control_transport, "udp")
+        self.assertTrue(fixed_udp.save_data_each_step)
         self.assertTrue(lockstep.fixed_step)
         self.assertEqual(lockstep.fixed_control_transport, "tcp")
 

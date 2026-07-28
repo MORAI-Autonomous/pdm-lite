@@ -378,6 +378,9 @@ def normalize_runtime_modes(
     elif args.control_mode == "fixed-udp":
         args.fixed_step = True
         args.fixed_control_transport = "udp"
+        # MORAI publishes the UDP Vehicle Info frame only after SaveData has
+        # committed the preceding FixedStep output.
+        args.save_data_each_step = True
     elif args.control_mode == "fixed-tcp-lockstep":
         args.fixed_step = True
         args.fixed_control_transport = "tcp"
@@ -850,6 +853,119 @@ def state_stamp(state) -> tuple[int, int]:
     return state.stamp_seconds, state.stamp_nanos
 
 
+class FixedUdpDashboard:
+    def __init__(self) -> None:
+        self.line_count = 0
+        self.cycle: int | str = "-"
+        self.fixed = "-"
+        self.save = "-"
+        self.vehicle = "-"
+        self.manual = "-"
+        self.ego = "-"
+        self.position = "-"
+        self.yaw = "-"
+        self.speed = "-"
+        self.speed_cap = "-"
+        self.control = "-"
+        self.applied = "-"
+        self.leading = "-"
+
+    def _render(self) -> None:
+        lines = [
+            "[ fixed-udp lockstep ]",
+            f"Cycle           : {self.cycle}",
+            f"FixedStep       : {self.fixed}",
+            f"SaveData        : {self.save}",
+            f"VehicleInfo     : {self.vehicle}",
+            f"ManualControl   : {self.manual}",
+            "",
+            f"Ego             : {self.ego}",
+            f"Position        : {self.position}",
+            f"Yaw             : {self.yaw}",
+            f"Speed           : {self.speed}",
+            f"Speed cap       : {self.speed_cap}",
+            f"Control command : {self.control}",
+            f"Applied control : {self.applied}",
+            f"Leading vehicle : {self.leading}",
+        ]
+        if self.line_count:
+            sys.stdout.write(f"\x1b[{self.line_count - 1}F")
+        sys.stdout.write("\n".join(f"\x1b[2K\r{line}" for line in lines))
+        sys.stdout.flush()
+        self.line_count = len(lines)
+
+    def begin(self, cycle: int | str) -> None:
+        self.cycle = cycle
+        self.fixed = "WAIT  TCP 0x1201"
+        self.save = "-"
+        self.vehicle = "-"
+        self.manual = "-"
+        self._render()
+
+    def fixed_ok(self) -> None:
+        self.fixed = "OK    TCP 0x1201"
+        self.save = "WAIT  TCP 0x1202"
+        self._render()
+
+    def save_ok(self, called: bool) -> None:
+        self.save = "OK    TCP 0x1202" if called else "SKIP  TCP 0x1202"
+        self.vehicle = "WAIT  UDP"
+        self._render()
+
+    def vehicle_ok(self, ego, udp: MoraiUdpClient) -> None:
+        stamp = state_stamp(ego)
+        self.vehicle = (
+            f"OK    UDP rx={udp.rx_records} stamp={format_stamp(stamp)}"
+        )
+        self.manual = "WAIT  UDP"
+        self.ego = str(getattr(ego, "id", "-"))
+        self.position = (
+            f"({getattr(ego, 'x', 0.0):.2f}, {getattr(ego, 'y', 0.0):.2f})"
+        )
+        self.yaw = f"{getattr(ego, 'yaw_deg', 0.0):.1f} deg"
+        self.speed = f"{getattr(ego, 'speed', 0.0) * 3.6:.1f} kph"
+        self.applied = (
+            f"T={getattr(ego, 'throttle', 0.0):.2f} "
+            f"B={getattr(ego, 'brake', 0.0):.2f} "
+            f"S={getattr(ego, 'steer', 0.0):.2f}"
+        )
+        self._render()
+
+    def prepare_control(
+        self,
+        *,
+        control: EgoManualControl,
+        current_speed: float,
+        target_speed: float,
+        speed_cap: float | None,
+        leading: str,
+    ) -> None:
+        self.speed = f"{current_speed * 3.6:.1f} -> {target_speed * 3.6:.1f} kph"
+        self.speed_cap = f"{speed_cap * 3.6:.1f} kph" if speed_cap is not None else "-"
+        self.control = (
+            f"T={control.throttle:.2f} B={control.brake:.2f} "
+            f"S={control.steer:.2f}"
+        )
+        self.leading = leading
+
+    def manual_ok(
+        self, control: EgoManualControl, udp: MoraiUdpClient
+    ) -> None:
+        self.manual = f"OK    UDP tx={udp.tx_packets}"
+        if self.control == "-":
+            self.control = (
+                f"T={control.throttle:.2f} B={control.brake:.2f} "
+                f"S={control.steer:.2f}"
+            )
+        self._render()
+
+    def finish(self) -> None:
+        if self.line_count:
+            sys.stdout.write("\n")
+            sys.stdout.flush()
+            self.line_count = 0
+
+
 def send_ego_control(
     *,
     udp: MoraiUdpClient,
@@ -868,6 +984,26 @@ def send_ego_control(
         return result
     udp.send_control(control)
     return None
+
+
+def print_fixed_udp_control_event(
+    *,
+    tcp: MoraiTcpClient,
+    udp: MoraiUdpClient,
+    control: EgoManualControl,
+) -> None:
+    dashboard = getattr(tcp, "_fixed_udp_dashboard", None)
+    if isinstance(dashboard, FixedUdpDashboard):
+        dashboard.manual_ok(control, udp)
+        return
+    cycle_value = getattr(tcp, "fixed_step_request_count", "-")
+    cycle = cycle_value if isinstance(cycle_value, int) else "-"
+    print(
+        f"lockstep_event cycle={cycle} "
+        "transport=UDP api=ManualControl sent=yes "
+        f"cmd=(thr={control.throttle:.2f}, brk={control.brake:.2f}, "
+        f"steer={control.steer:.2f}) control_udp_tx={udp.tx_packets}"
+    )
 
 
 def is_new_state_sample(
@@ -1253,6 +1389,11 @@ def fixed_step_and_wait_for_ego(
     ego_candidates: tuple[str, ...],
     expected_scenario_name: str | None = None,
 ) -> tuple[object, dict[str, int], dict[str, int] | None]:
+    dashboard = getattr(tcp, "_fixed_udp_dashboard", None)
+    if isinstance(dashboard, FixedUdpDashboard):
+        next_cycle = getattr(tcp, "fixed_step_request_count", 0) + 1
+        dashboard.begin(next_cycle)
+
     def recover_after_tcp_failure(operation: str, exc: Exception) -> None:
         if not expected_scenario_name:
             raise MoraiTcpError(f"{operation} failed: {exc}") from exc
@@ -1309,11 +1450,15 @@ def fixed_step_and_wait_for_ego(
         raise AssertionError("unreachable")
     if fixed_result.get("result_code") != 0:
         raise MoraiTcpError(f"FixedStep(1) failed: {fixed_result}")
+    if isinstance(dashboard, FixedUdpDashboard):
+        dashboard.fixed_ok()
     try:
         save_result = tcp.save_data() if save_data_each_step else None
     except (OSError, MoraiTcpError) as exc:
         recover_after_tcp_failure("SaveData", exc)
         raise AssertionError("unreachable")
+    if isinstance(dashboard, FixedUdpDashboard):
+        dashboard.save_ok(save_result is not None)
     def check_scenario_progress(phase: str) -> None:
         try:
             active_status = tcp.active_suite_status() if expected_scenario_name else None
@@ -1334,11 +1479,60 @@ def fixed_step_and_wait_for_ego(
             if active_status is not None
             else ""
         )
-        print(
-            f"fixed_step_{phase}: "
-            f"fixed={fixed_result} active_scenario={active_name or '-'} "
-            f"scenario_status={scenario_status}"
-        )
+        cycle_value = getattr(tcp, "fixed_step_request_count", "-")
+        cycle = cycle_value if isinstance(cycle_value, int) else "-"
+        if phase == "ack":
+            if not isinstance(dashboard, FixedUdpDashboard):
+                print(
+                    f"lockstep_event cycle={cycle} "
+                    f"transport=TCP api=FixedStep msg=0x1201 result={fixed_result}"
+                )
+                print(
+                    f"lockstep_event cycle={cycle} "
+                    f"transport=TCP api=SaveData msg=0x1202 "
+                    f"result={save_result if save_result is not None else 'not_called'}"
+                )
+            last_reported_active_name = getattr(
+                tcp, "_last_reported_active_scenario_name", None
+            )
+            if not isinstance(last_reported_active_name, str):
+                last_reported_active_name = None
+            if last_reported_active_name is None:
+                setattr(tcp, "_last_reported_active_scenario_name", active_name)
+            elif active_name != last_reported_active_name:
+                if isinstance(dashboard, FixedUdpDashboard):
+                    dashboard.finish()
+                print(
+                    f"tcp_response cycle={cycle} api=ActiveSuiteStatus msg=0x1401 "
+                    f"event=changed previous={last_reported_active_name or '-'} "
+                    f"active_scenario={active_name or '-'}"
+                )
+                setattr(tcp, "_last_reported_active_scenario_name", active_name)
+            scenario_state = scenario_status.get("state")
+            last_reported_scenario_state = getattr(
+                tcp, "_last_reported_scenario_state", None
+            )
+            if not isinstance(last_reported_scenario_state, int):
+                last_reported_scenario_state = None
+            if last_reported_scenario_state is None:
+                setattr(tcp, "_last_reported_scenario_state", scenario_state)
+            elif scenario_state != last_reported_scenario_state:
+                if isinstance(dashboard, FixedUdpDashboard):
+                    dashboard.finish()
+                print(
+                    f"tcp_response cycle={cycle} api=ScenarioStatus msg=0x1504 "
+                    f"event=changed previous={last_reported_scenario_state!r} "
+                    f"result={scenario_status}"
+                )
+                setattr(tcp, "_last_reported_scenario_state", scenario_state)
+        else:
+            if isinstance(dashboard, FixedUdpDashboard):
+                dashboard.finish()
+            print(
+                f"lockstep_progress cycle={cycle} phase={phase} "
+                f"active_scenario={active_name or '-'} "
+                f"scenario_status={scenario_status}"
+            )
         if (
             expected_scenario_name
             and active_name
@@ -1370,6 +1564,19 @@ def fixed_step_and_wait_for_ego(
         ego = resolve_runtime_ego(udp, ego_candidates)
         current_stamp = state_stamp(ego) if ego is not None else None
         if ego is not None and (previous_stamp is None or current_stamp > previous_stamp):
+            if isinstance(dashboard, FixedUdpDashboard):
+                dashboard.vehicle_ok(ego, udp)
+                return ego, fixed_result, save_result
+            cycle_value = getattr(tcp, "fixed_step_request_count", "-")
+            cycle = cycle_value if isinstance(cycle_value, int) else "-"
+            print(
+                f"lockstep_event cycle={cycle} "
+                f"source=UDP api=VehicleInfo received=yes "
+                f"stamp={format_stamp(current_stamp)} "
+                f"ego={getattr(ego, 'id', '-')} raw={getattr(ego, 'raw_id', '-')} "
+                f"pos=({getattr(ego, 'x', 0.0):.2f},"
+                f"{getattr(ego, 'y', 0.0):.2f}) udp_rx={udp.rx_records}"
+            )
             return ego, fixed_result, save_result
 
         if now >= next_status:
@@ -2046,6 +2253,30 @@ def main(argv: list[str] | None = None) -> int:
     lockstep_ego = None
     duplicate_state_polls = 0
     lockstep_wait_started: float | None = None
+    dashboard_udp_modes = {"variable-udp", "fixed-auto-udp"}
+    variable_live_status = (
+        args.control_mode in dashboard_udp_modes and sys.stdout.isatty()
+    )
+    variable_live_lines = 0
+
+    def finish_variable_live_status() -> None:
+        nonlocal variable_live_lines
+        if variable_live_lines:
+            sys.stdout.write("\n")
+            sys.stdout.flush()
+            variable_live_lines = 0
+
+    def render_variable_live_status(lines: list[str]) -> None:
+        nonlocal variable_live_lines
+        if variable_live_lines:
+            if variable_live_lines > 1:
+                sys.stdout.write(f"\x1b[{variable_live_lines - 1}F")
+            else:
+                sys.stdout.write("\r")
+        sys.stdout.write("\n".join(f"\x1b[2K\r{line}" for line in lines))
+        sys.stdout.flush()
+        variable_live_lines = len(lines)
+
     transition_save_data_required = False
     control_steps = 0
     control_started = False
@@ -2391,12 +2622,33 @@ def main(argv: list[str] | None = None) -> int:
                 ego_candidates=ego_candidates,
                 send_control=not args.no_send,
             )
+        elif args.control_mode == "fixed-udp" and not args.hold_until_play:
+            if tcp is None:
+                raise MoraiTcpError("fixed-udp requires an active TCP connection")
+            # Fixed/UserControl mode does not publish the first Vehicle Info
+            # until the simulation clock advances. Force exactly one wake-up
+            # step, then wait for that state before sending the first UDP
+            # control command.
+            bootstrap_fixed_tcp_ego(
+                tcp=tcp,
+                udp=udp,
+                ego_id=ego_id,
+                timeout=args.lockstep_state_timeout,
+                status_period=status_period,
+                save_data_each_step=(
+                    args.save_data_each_step or transition_save_data_required
+                ),
+                ego_candidates=ego_candidates,
+                send_control=False,
+                force_step=True,
+                expected_scenario_name=current_scenario_name,
+            )
         elif not wait_for_udp_ready(
             udp,
-            tcp if args.control_mode == "fixed-udp" else None,
+            None,
             timeout=args.udp_ready_timeout,
             status_period=status_period,
-            fixed_step=args.control_mode == "fixed-udp" and not args.hold_until_play,
+            fixed_step=False,
             save_data_each_step=(
                 args.save_data_each_step or transition_save_data_required
             ),
@@ -2412,7 +2664,20 @@ def main(argv: list[str] | None = None) -> int:
             tcp.close()
             tcp = None
         trace_log = RuntimeTraceLog(args.trace_log)
+        if (
+            args.control_mode == "fixed-udp"
+            and tcp is not None
+            and sys.stdout.isatty()
+        ):
+            # Bootstrap, preflight, and route setup emit ordinary line logs.
+            # Start the live dashboard only after those initialization messages
+            # so they cannot invalidate its cursor-relative screen region.
+            setattr(tcp, "_fixed_udp_dashboard", FixedUdpDashboard())
     except (OSError, MoraiTcpError, RuntimeError) as exc:
+        if tcp is not None:
+            dashboard = getattr(tcp, "_fixed_udp_dashboard", None)
+            if isinstance(dashboard, FixedUdpDashboard):
+                dashboard.finish()
         print(f"ERROR: {exc}")
         if tcp is not None:
             tcp.close()
@@ -2563,17 +2828,20 @@ def main(argv: list[str] | None = None) -> int:
                         and loop_start - lockstep_wait_started >= args.lockstep_state_timeout
                     ):
                         raise RuntimeError(
-                            "lockstep state timeout "
+                            "UDP VehicleInfo state timeout "
                             f"last_processed={format_stamp(last_processed_stamp)} "
                             f"waited={args.lockstep_state_timeout:g}s "
                             f"rx={udp.rx_records} invalid={udp.invalid_packets}"
                         )
-                    if loop_start >= next_status:
+                    stale_wait = loop_start - lockstep_wait_started
+                    if stale_wait >= 0.5 and loop_start >= next_status:
+                        finish_variable_live_status()
                         print(
-                            "lockstep_wait: duplicate ego state "
+                            "WARNING variable_udp_stale: no new VehicleInfo "
+                            f"waited={stale_wait:.3f}s "
                             f"sim_time={format_stamp(current_stamp)} "
                             f"polls={duplicate_state_polls} "
-                            f"rx={udp.rx_records} tx={udp.tx_packets}"
+                            f"udp_rx={udp.rx_records} control_udp_tx={udp.tx_packets}"
                         )
                         next_status = loop_start + status_period
                     elapsed = time.monotonic() - loop_start
@@ -2625,6 +2893,12 @@ def main(argv: list[str] | None = None) -> int:
                         ego_id=ego_id,
                         control=guard_control,
                     )
+                    if args.control_mode == "fixed-udp" and tcp is not None:
+                        print_fixed_udp_control_event(
+                            tcp=tcp,
+                            udp=udp,
+                            control=guard_control,
+                        )
                     control_started = True
                 if tcp is not None:
                     try:
@@ -2652,6 +2926,7 @@ def main(argv: list[str] | None = None) -> int:
                 if trace_log.enabled:
                     trace_log.write(build_runtime_trace_record(ego=ego))
                 if loop_start >= next_status:
+                    finish_variable_live_status()
                     guard_reason = "outside_drivable_area" if not inside_drivable_area else "route_error"
                     print(
                         "route_guard: brake control "
@@ -2686,6 +2961,28 @@ def main(argv: list[str] | None = None) -> int:
                 map_speed_limit=map_speed_limit,
                 leading_vehicle=leading_vehicle,
             )
+            if args.control_mode == "fixed-udp" and tcp is not None:
+                dashboard = getattr(tcp, "_fixed_udp_dashboard", None)
+                if isinstance(dashboard, FixedUdpDashboard):
+                    speed_caps = [
+                        value
+                        for value in (step.map_speed_limit, step.curve_speed_cap)
+                        if value is not None
+                    ]
+                    dashboard.prepare_control(
+                        control=step.control,
+                        current_speed=step.current_speed,
+                        target_speed=step.target_speed,
+                        speed_cap=min(speed_caps) if speed_caps else None,
+                        leading=(
+                            f"{step.leading_vehicle_id}@{step.leading_distance:.1f}m/"
+                            f"{step.leading_speed * 3.6:.1f}kph"
+                            if step.leading_vehicle_id is not None
+                            and step.leading_distance is not None
+                            and step.leading_speed is not None
+                            else "-"
+                        ),
+                    )
             if not args.no_send:
                 send_ego_control(
                     udp=udp,
@@ -2695,6 +2992,12 @@ def main(argv: list[str] | None = None) -> int:
                     ego_id=ego_id,
                     control=step.control,
                 )
+                if args.control_mode == "fixed-udp" and tcp is not None:
+                    print_fixed_udp_control_event(
+                        tcp=tcp,
+                        udp=udp,
+                        control=step.control,
+                    )
                 control_started = True
             if tcp is not None:
                 try:
@@ -2722,7 +3025,85 @@ def main(argv: list[str] | None = None) -> int:
             if trace_log.enabled:
                 trace_log.write(build_runtime_trace_record(ego=ego))
 
-            if loop_start >= next_status:
+            if (
+                args.control_mode != "fixed-udp"
+                and (variable_live_status or loop_start >= next_status)
+            ):
+                lead_text = (
+                    f"{step.leading_vehicle_id}@{step.leading_distance:.1f}m/"
+                    f"{step.leading_speed * 3.6:.1f}kph"
+                    if step.leading_vehicle_id is not None
+                    and step.leading_distance is not None
+                    and step.leading_speed is not None
+                    else "-"
+                )
+                if args.control_mode in dashboard_udp_modes:
+                    speed_caps = [
+                        value
+                        for value in (step.map_speed_limit, step.curve_speed_cap)
+                        if value is not None
+                    ]
+                    cap_text = (
+                        f"{min(speed_caps) * 3.6:.1f}kph" if speed_caps else "-"
+                    )
+                    diagnostics = ""
+                    if udp.invalid_packets:
+                        diagnostics += f" WARNING invalid={udp.invalid_packets}"
+                    if udp.rx_chunks:
+                        diagnostics += f" chunks={udp.rx_chunks}"
+                    status_text = (
+                        "variable_udp: "
+                        f"ego={ego.id} pos=({ego.x:.2f},{ego.y:.2f}) "
+                        f"yaw={ego.yaw_deg:.1f} "
+                        f"speed={step.current_speed * 3.6:.1f}"
+                        f"->{step.target_speed * 3.6:.1f}kph "
+                        f"cap={cap_text} "
+                        f"control=(T={step.control.throttle:.2f} "
+                        f"B={step.control.brake:.2f} S={step.control.steer:.2f}) "
+                        f"applied=(T={ego.throttle:.2f} "
+                        f"B={ego.brake:.2f} S={ego.steer:.2f}) "
+                        f"lead={lead_text} "
+                        f"net=(rx={udp.rx_records} tx={udp.tx_packets})"
+                        f"{diagnostics}"
+                    )
+                    if variable_live_status:
+                        render_variable_live_status(
+                            [
+                                f"[ {args.control_mode} live ]",
+                                f"Ego             : {ego.id}",
+                                f"Position        : ({ego.x:.2f}, {ego.y:.2f})",
+                                f"Yaw             : {ego.yaw_deg:.1f} deg",
+                                (
+                                    f"Speed           : {step.current_speed * 3.6:.1f} "
+                                    f"-> {step.target_speed * 3.6:.1f} kph"
+                                ),
+                                f"Speed cap       : {cap_text}",
+                                (
+                                    "Control command : "
+                                    f"T={step.control.throttle:.2f} "
+                                    f"B={step.control.brake:.2f} "
+                                    f"S={step.control.steer:.2f}"
+                                ),
+                                (
+                                    "Applied control : "
+                                    f"T={ego.throttle:.2f} "
+                                    f"B={ego.brake:.2f} S={ego.steer:.2f}"
+                                ),
+                                f"Leading vehicle : {lead_text}",
+                                (
+                                    f"VehicleInfo RX  : {udp.rx_records}"
+                                    f"{diagnostics}"
+                                ),
+                                f"ManualControl TX: {udp.tx_packets}",
+                            ]
+                        )
+                    else:
+                        print(status_text)
+                        next_status = loop_start + status_period
+                    elapsed = time.monotonic() - loop_start
+                    if tcp is None and elapsed < period:
+                        time.sleep(period - elapsed)
+                    continue
                 speed_limit_text = (
                     f"{step.map_speed_limit:.2f}" if step.map_speed_limit is not None else "-"
                 )
@@ -2730,7 +3111,8 @@ def main(argv: list[str] | None = None) -> int:
                     f"{step.curve_speed_cap:.2f}" if step.curve_speed_cap is not None else "-"
                 )
                 print(
-                    "ego={ego_id} raw={raw_id} pos=({x:.2f},{y:.2f}) "
+                    "udp_vehicle_info: ego={ego_id} raw={raw_id} "
+                    "pos=({x:.2f},{y:.2f}) "
                     "actors={actors} "
                     "yaw={yaw:.1f} speed={speed:.2f}mps({speed_kph:.1f}kph)/{target:.2f} "
                     "lead={lead} "
@@ -2738,7 +3120,8 @@ def main(argv: list[str] | None = None) -> int:
                     "limit={limit} curve={curve} "
                     "cmd=(thr={thr:.2f}, brk={brk:.2f}, steer={steer:.2f}) "
                     "applied=(thr={athr:.2f}, brk={abrk:.2f}, steer={asteer:.2f}) "
-                    "rx={rx} chunks={chunks} invalid={invalid} tx={tx} route={route_points}{fixed}".format(
+                    "udp_rx={rx} chunks={chunks} invalid={invalid} "
+                    "control_udp_tx={tx} route={route_points}".format(
                         ego_id=ego.id,
                         raw_id=ego.raw_id,
                         x=ego.x,
@@ -2748,16 +3131,7 @@ def main(argv: list[str] | None = None) -> int:
                         speed=step.current_speed,
                         speed_kph=step.current_speed * 3.6,
                         target=step.target_speed,
-                        lead=(
-                            f"{step.leading_vehicle_id}@{step.leading_distance:.1f}m/"
-                            f"lat={leading_vehicle.lateral_offset:.1f}m/"
-                            f"{step.leading_speed * 3.6:.1f}kph"
-                            if step.leading_vehicle_id is not None
-                            and step.leading_distance is not None
-                            and step.leading_speed is not None
-                            and leading_vehicle is not None
-                            else "-"
-                        ),
+                        lead=lead_text,
                         vx=ego.velocity_x,
                         vy=ego.velocity_y,
                         vz=ego.velocity_z,
@@ -2774,11 +3148,6 @@ def main(argv: list[str] | None = None) -> int:
                         invalid=udp.invalid_packets,
                         tx=udp.tx_packets,
                         route_points=step.route_points,
-                        fixed=(
-                            f" fixed={fixed_result} save={save_result}"
-                            if fixed_result is not None
-                            else ""
-                        ),
                     )
                 )
                 next_status = loop_start + status_period
@@ -2787,16 +3156,32 @@ def main(argv: list[str] | None = None) -> int:
             if tcp is None and elapsed < period:
                 time.sleep(period - elapsed)
     except KeyboardInterrupt:
+        finish_variable_live_status()
+        dashboard = getattr(tcp, "_fixed_udp_dashboard", None)
+        if isinstance(dashboard, FixedUdpDashboard):
+            dashboard.finish()
         print("stopped by user")
     except ScenarioBoundaryDetected as exc:
+        finish_variable_live_status()
+        dashboard = getattr(tcp, "_fixed_udp_dashboard", None)
+        if isinstance(dashboard, FixedUdpDashboard):
+            dashboard.finish()
         print(f"scenario_boundary_detected: {exc}")
         if args.exit_on_scenario_end:
             return 0
         return 2
     except (OSError, MoraiTcpError, RuntimeError) as exc:
+        finish_variable_live_status()
+        dashboard = getattr(tcp, "_fixed_udp_dashboard", None)
+        if isinstance(dashboard, FixedUdpDashboard):
+            dashboard.finish()
         print(f"ERROR: {exc}")
         return 2
     finally:
+        finish_variable_live_status()
+        dashboard = getattr(tcp, "_fixed_udp_dashboard", None)
+        if isinstance(dashboard, FixedUdpDashboard):
+            dashboard.finish()
         if not args.no_send and control_started:
             try:
                 send_ego_control(

@@ -192,6 +192,7 @@ class MoraiTcpClient:
         self.timeout = timeout
         self._socket: socket.socket | None = None
         self._request_id = 1
+        self.fixed_step_request_count = 0
 
     def open(self) -> None:
         if self.port <= 0:
@@ -283,6 +284,7 @@ class MoraiTcpClient:
         return parse_set_simulation_time_mode(self.request(MSG_SET_SIMULATION_TIME_MODE, payload).payload)
 
     def fixed_step(self, step_count: int = 1) -> dict[str, int]:
+        self.fixed_step_request_count += 1
         payload = struct.pack("<I", int(step_count))
         return parse_result_code(self.request(MSG_FIXED_STEP, payload).payload)
 
