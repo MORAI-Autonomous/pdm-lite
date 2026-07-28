@@ -3,6 +3,8 @@ This file implements a lateral PID controller and its super class, which enables
 controller implementations.
 """
 
+# Modified for MORAI PDM integration in 2026.
+
 import numpy as np
 
 
