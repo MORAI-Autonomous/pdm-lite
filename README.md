@@ -119,3 +119,15 @@ py -3 .\tools\benchmark_mgeo_route.py `
 ```
 
 No DCAS or other scenario suite is included.
+
+## License
+
+MORAI-authored portions of this repository are provided under the
+[MIT License](LICENSE).
+
+Third-party components remain under their respective licenses. In particular,
+the bundled PDM-Lite source retains its
+[Apache License 2.0](pdm_lite/LICENSE). Files adapted from other projects and
+their associated assets are not relicensed by the repository-level MIT
+License; review their original notices and license terms before redistribution
+or commercial use.

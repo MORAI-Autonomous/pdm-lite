@@ -1,5 +1,6 @@
 # Package Contents
 
+- `LICENSE`: MIT license for MORAI-authored portions.
 - `tools/`: MORAI suite preparation, environment checks, launchers, and the PDM runner.
 - `tools/pdm_morai/`: runtime modules and tests.
 - `pdm_lite/team_code/`: PDM Lite controller dependencies.
