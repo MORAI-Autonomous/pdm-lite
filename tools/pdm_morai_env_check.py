@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import importlib
 import sys
 from pathlib import Path
@@ -41,7 +42,18 @@ def check_import(module_name: str) -> bool:
     return True
 
 
-def main() -> int:
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Check the PDM-MORAI runtime environment.")
+    parser.add_argument(
+        "--mgeo-dir",
+        required=True,
+        help="Authorized external MGeo directory containing link_set.json",
+    )
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = build_parser().parse_args(argv)
     add_import_paths()
     failures = 0
 
@@ -61,17 +73,20 @@ def main() -> int:
     ):
         failures += 0 if check_import(module_name) else 1
 
+    mgeo_dir = Path(args.mgeo_dir).expanduser().resolve(strict=False)
+    if not (mgeo_dir / "link_set.json").is_file() and (
+        mgeo_dir / "MGeo" / "link_set.json"
+    ).is_file():
+        mgeo_dir = mgeo_dir / "MGeo"
+
     required_files = (
         (ROOT_DIR / "tools" / "run_pdm_morai_xosc.ps1", "XOSC runner"),
         (ROOT_DIR / "tools" / "run_pdm_morai_control.ps1", "control runner"),
         (ROOT_DIR / "requirements-pdm-morai.txt", "PDM-MORAI requirements"),
-        (ROOT_DIR / "data" / "morai" / "mgeo" / "KATRI", "shared MGeo root"),
-        (ROOT_DIR / "data" / "morai" / "mgeo" / "KATRI" / "link_set.json", "MGeo link_set"),
-        (ROOT_DIR / "data" / "morai" / "mgeo" / "KATRI" / "node_set.json", "MGeo node_set"),
-        (
-            ROOT_DIR / "data" / "morai" / "mgeo" / "KATRI" / "lane_boundary_set.json",
-            "MGeo lane_boundary_set",
-        ),
+        (mgeo_dir, "external MGeo root"),
+        (mgeo_dir / "link_set.json", "MGeo link_set"),
+        (mgeo_dir / "node_set.json", "MGeo node_set"),
+        (mgeo_dir / "lane_boundary_set.json", "MGeo lane_boundary_set"),
     )
     for path, label in required_files:
         failures += 0 if check_file(path, label) else 1

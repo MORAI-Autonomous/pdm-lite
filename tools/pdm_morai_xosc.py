@@ -40,6 +40,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output-root", default=None, help="Generated suite output root")
     parser.add_argument("--ego-entity", default=None, help="Explicit Ego ScenarioObject name")
     parser.add_argument(
+        "--mgeo-dir",
+        required=True,
+        help="Authorized external MGeo directory containing link_set.json",
+    )
+    parser.add_argument(
         "--manual-control-entity",
         default=None,
         help="Runtime Manual Control target override; defaults to detected Ego",
@@ -127,6 +132,7 @@ def main(argv: list[str] | None = None) -> int:
                 output_root,
                 suite_path=None,
                 in_place=False,
+                mgeo_dir=Path(args.mgeo_dir),
             )
             print_report(
                 info,

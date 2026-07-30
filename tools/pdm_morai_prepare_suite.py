@@ -127,6 +127,7 @@ class XoscInfo:
     ego_entity: str | None
     npc_entities: list[str]
     runner_map_name: str | None
+    mgeo_dir: Path | None
     target_suite_path: Path
     target_project_path: Path
     target_xosc_path: Path
@@ -402,6 +403,7 @@ def parse_xosc(
     output_root: Path,
     suite_path: Path | None = None,
     in_place: bool = False,
+    mgeo_dir: Path | None = None,
 ) -> XoscInfo:
     if not path.exists():
         raise PrepareError(f"XOSC file does not exist: {path}")
@@ -455,12 +457,25 @@ def parse_xosc(
     )
     if runner_map_name is None:
         blocking_errors.append("Cannot map XOSC road network to a local MGeo map directory.")
-    mgeo_dir = (
-        ROOT_DIR / "data" / "morai" / "mgeo" / runner_map_name
-        if runner_map_name
-        else None
-    )
-    poses, speeds = parse_initial_state(root, parameters, mgeo_dir)
+    resolved_mgeo_dir = mgeo_dir.expanduser().resolve(strict=False) if mgeo_dir else None
+    if resolved_mgeo_dir is not None:
+        nested = resolved_mgeo_dir / "MGeo"
+        if not (resolved_mgeo_dir / "link_set.json").is_file() and (
+            nested / "link_set.json"
+        ).is_file():
+            resolved_mgeo_dir = nested
+        if not (resolved_mgeo_dir / "link_set.json").is_file():
+            blocking_errors.append(
+                f"Invalid --mgeo-dir; link_set.json was not found: {resolved_mgeo_dir}"
+            )
+            resolved_mgeo_dir = None
+    if resolved_mgeo_dir is None and runner_map_name:
+        legacy_mgeo_dir = ROOT_DIR / "data" / "morai" / "mgeo" / runner_map_name
+        if (legacy_mgeo_dir / "link_set.json").is_file():
+            resolved_mgeo_dir = legacy_mgeo_dir
+    if resolved_mgeo_dir is None:
+        blocking_errors.append("MGeo data is not bundled. Provide --mgeo-dir.")
+    poses, speeds = parse_initial_state(root, parameters, resolved_mgeo_dir)
     if ego_entity:
         speeds[ego_entity] = 0.0
     vehicles: dict[str, VehicleInfo] = {}
@@ -502,6 +517,7 @@ def parse_xosc(
         ego_entity=ego_entity,
         npc_entities=npc_entities,
         runner_map_name=runner_map_name,
+        mgeo_dir=resolved_mgeo_dir,
         target_suite_path=target_suite_path,
         target_project_path=project_path,
         target_xosc_path=target_xosc_path,
@@ -689,7 +705,7 @@ def resolve_runner_map(
     source_map_id = project_map_id(source_project_map)
     if source_map_id is not None:
         local_name = LOCAL_MGEO_BY_SIM_MAP_ID.get(source_map_id)
-        if local_name and (map_root / local_name).exists():
+        if local_name:
             warnings.append(
                 f"SIM map id {source_map_id} is mapped to local MGeo '{local_name}'."
             )
@@ -701,13 +717,13 @@ def resolve_runner_map(
         source_map_name = str(value) if value else None
     candidates = [value for value in (logic_file, source_map_name, morai_map) if value]
     for candidate in candidates:
-        if (map_root / candidate).exists():
-            return candidate
         alias = LOCAL_MGEO_BY_MAP_NAME.get(candidate)
-        if alias and (map_root / alias).exists():
+        if alias:
             if alias != candidate:
                 warnings.append(f"Map '{candidate}' is normalized to local MGeo '{alias}'.")
             return alias
+        if (map_root / candidate).exists():
+            return candidate
     return None
 
 
@@ -771,6 +787,9 @@ def project_logic_path(info: XoscInfo, project_dir: Path) -> Path | None:
 
 def mgeo_source_candidates(info: XoscInfo) -> list[Path]:
     candidates: list[Path] = []
+    explicit_mgeo_dir = getattr(info, "mgeo_dir", None)
+    if explicit_mgeo_dir is not None:
+        candidates.append(explicit_mgeo_dir)
     logic_file = project_logic_file(info)
     if logic_file:
         logic = Path(*[part for part in logic_file.replace("\\", "/").split("/") if part])
@@ -1242,6 +1261,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--suite", default=None, help="Existing msuite to update when --in-place is used")
     parser.add_argument("--in-place", action="store_true", help="Update the given msuite shell instead of creating a new suite")
     parser.add_argument("--ego-entity", default=None, help="Explicit Ego ScenarioObject name")
+    parser.add_argument(
+        "--mgeo-dir",
+        required=True,
+        help="Authorized external MGeo directory containing link_set.json",
+    )
     parser.add_argument("--output-root", default=str(DEFAULT_OUTPUT_ROOT), help="Generated suite root directory")
     parser.add_argument("--rx-port", type=int, default=None, help="UDP Vehicle Info receive port for the runner")
     parser.add_argument("--tx-port", type=int, default=None, help="UDP Manual Control port")
@@ -1284,6 +1308,7 @@ def main(argv: list[str] | None = None) -> int:
             Path(args.output_root).resolve(strict=False),
             suite_path=suite_path,
             in_place=args.in_place,
+            mgeo_dir=Path(args.mgeo_dir),
         )
         print_report(
             info,

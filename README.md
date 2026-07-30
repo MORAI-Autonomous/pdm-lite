@@ -1,4 +1,4 @@
-# MORAI PDM Coverage Package 2026.07.24-r1
+# MORAI PDM Coverage Package 2026.07.30-r1
 
 This repository contains the MORAI PDM runner based on the 0724 fixed-lockstep
 implementation. It also includes the later `fixed-auto-udp` control mode.
@@ -26,41 +26,45 @@ GUI/headless execution mode is independent from the control mode.
 
 ```powershell
 py -3 -m pip install -r .\requirements-pdm-morai.txt
+Copy-Item .\configs\pdm_morai.example.json .\configs\pdm_morai.local.json
 ```
 
-## GUI attach examples
+Edit `configs\pdm_morai.local.json` and set `mgeo_dir` to an authorized MGeo
+directory on the local machine. The directory must contain `link_set.json`.
 
-Variable UDP:
+Check the runtime and external map:
+
+```powershell
+.\tools\run_pdm_morai_env_check.ps1 `
+  --mgeo-dir "C:\MORAI_DATA\MGeo\KATRI"
+```
+
+## Config-based execution
+
+The example config contains the settings normally used for GUI TCP lockstep.
+Run it with one launcher argument:
 
 ```powershell
 .\tools\run_pdm_morai_control.ps1 `
-  --execution-mode gui `
-  --control-mode variable-udp `
-  --tcp-port 20000
+  --config ".\configs\pdm_morai.local.json"
+```
+
+Command-line arguments remain available and override config values. For
+example, the same local config can be used for Variable UDP:
+
+
+```powershell
+.\tools\run_pdm_morai_control.ps1 `
+  --config ".\configs\pdm_morai.local.json" `
+  --control-mode variable-udp
 ```
 
 Fixed time with a SIM-owned clock:
 
 ```powershell
 .\tools\run_pdm_morai_control.ps1 `
-  --execution-mode gui `
-  --control-mode fixed-auto-udp `
-  --tcp-port 20000 `
-  --fixed-target-fps 50 `
-  --physics-delta-time 20
-```
-
-SUT-owned TCP lockstep:
-
-```powershell
-.\tools\run_pdm_morai_control.ps1 `
-  --execution-mode gui `
-  --control-mode fixed-tcp-lockstep `
-  --tcp-port 20000 `
-  --pdm-step-delta-time 20 `
-  --physics-delta-time 20 `
-  --lockstep-state-timeout 20 `
-  --save-data-each-step
+  --config ".\configs\pdm_morai.local.json" `
+  --control-mode fixed-auto-udp
 ```
 
 To use suite metadata without loading the suite, add your own path:
@@ -76,14 +80,11 @@ intentional.
 
 ```powershell
 .\tools\run_pdm_morai_control.ps1 `
+  --config ".\configs\pdm_morai.local.json" `
   --execution-mode headless `
-  --control-mode fixed-tcp-lockstep `
   --suite "C:\path\to\scenario.msuite" `
   --load-suite `
-  --scenario-play `
-  --tcp-port 20000 `
-  --pdm-step-delta-time 20 `
-  --physics-delta-time 20
+  --scenario-play
 ```
 
 ## 0724 lockstep behavior
@@ -99,11 +100,21 @@ the replacement scenario. Ego-only VehicleInfo packets are supported.
 
 ## MGeo
 
-The repository currently retains `data/morai/mgeo/KATRI` as the default
-attach-only route fallback. A different map can be supplied with:
+MGeo map data is not included in this repository or distribution package.
+Global-route calculation requires an authorized local dataset supplied with
+`mgeo_dir` in the JSON config or with:
 
 ```powershell
   --mgeo-dir "C:\path\to\MGeo"
+```
+
+The path location does not change the route algorithm. Benchmark it on the
+target storage with:
+
+```powershell
+py -3 .\tools\benchmark_mgeo_route.py `
+  --mgeo-dir "C:\path\to\MGeo" `
+  --repeats 7
 ```
 
 No DCAS or other scenario suite is included.

@@ -640,10 +640,15 @@ def _resolve_mgeo_dir(binding: BindingConfig, project: dict[str, Any]) -> Path:
 def load_scenario(
     source: str | Path = DEFAULT_SUITE,
     scenario_name: str | None = None,
+    mgeo_dir: str | Path | None = None,
 ) -> PdmMoraiScenario:
     binding = resolve_binding_config(source, scenario_name)
     project = _project_json(binding.project_path)
-    map_dir = _resolve_mgeo_dir(binding, project)
+    map_dir = (
+        Path(mgeo_dir).expanduser().resolve(strict=False)
+        if mgeo_dir is not None
+        else _resolve_mgeo_dir(binding, project)
+    )
     xosc_speed, start_pose, actor_metadata, advanced_routes = _parse_xosc(
         binding.scenario_path,
         binding.ego_id,

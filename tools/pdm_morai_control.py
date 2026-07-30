@@ -77,12 +77,19 @@ DEFAULT_ATTACH_TX_IP = "127.0.0.1"
 DEFAULT_ATTACH_TX_PORT = 9091
 DEFAULT_ATTACH_CONTROL_HZ = 60
 DEFAULT_ATTACH_EGO_CANDIDATES = ("Ego", "Car_1")
-DEFAULT_ATTACH_MGEO_DIR = ROOT_DIR / "data" / "morai" / "mgeo" / "KATRI"
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Run PDM Lite controller output into MORAI Manual Control UDP."
+    )
+    parser.add_argument(
+        "--config",
+        default=None,
+        help=(
+            "JSON file containing argument defaults. Command-line arguments "
+            "override values from this file."
+        ),
     )
     parser.add_argument(
         "--run-preset",
@@ -304,8 +311,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--mgeo-dir",
-        default=str(DEFAULT_ATTACH_MGEO_DIR),
-        help="MGeo fallback used to build a route from the first runtime Ego pose",
+        default=None,
+        help=(
+            "Authorized external MGeo directory containing link_set.json. "
+            "This package does not bundle map data."
+        ),
     )
     parser.add_argument(
         "--route-entity",
@@ -313,6 +323,78 @@ def build_parser() -> argparse.ArgumentParser:
         help="Use Ego AdvancedRouting only when explicitly set to the ego id. NPC routes are not valid ego routes.",
     )
     return parser
+
+
+def apply_json_config_defaults(
+    parser: argparse.ArgumentParser,
+    config_path: str,
+) -> Path:
+    path = Path(config_path).expanduser().resolve(strict=False)
+    with path.open("r", encoding="utf-8-sig") as file:
+        values = json.load(file)
+    if not isinstance(values, dict):
+        raise ValueError(f"Config root must be a JSON object: {path}")
+
+    actions_by_dest: dict[str, list[argparse.Action]] = {}
+    for action in parser._actions:
+        actions_by_dest.setdefault(action.dest, []).append(action)
+
+    aliases = {"suite": "source", "path": "source"}
+    defaults: dict[str, Any] = {}
+    for raw_key, raw_value in values.items():
+        if not isinstance(raw_key, str):
+            raise ValueError(f"Config keys must be strings: {path}")
+        key = raw_key.lstrip("-").replace("-", "_")
+        destination = aliases.get(key, key)
+        actions = actions_by_dest.get(destination)
+        if not actions or destination in {"help", "config"}:
+            raise ValueError(f"Unknown config key {raw_key!r}: {path}")
+
+        value_action = next((action for action in actions if action.nargs != 0), None)
+        if value_action is None:
+            if not isinstance(raw_value, bool):
+                raise ValueError(
+                    f"Config key {raw_key!r} must be true or false: {path}"
+                )
+            value = raw_value
+            choices = None
+        else:
+            value = raw_value
+            if value is not None and value_action.type is not None:
+                try:
+                    value = value_action.type(value)
+                except (TypeError, ValueError) as exc:
+                    raise ValueError(
+                        f"Invalid config value for {raw_key!r}: {raw_value!r}"
+                    ) from exc
+            choices = value_action.choices
+        if choices is not None and value not in choices:
+            raise ValueError(
+                f"Invalid config value for {raw_key!r}: {value!r}; "
+                f"choose from {list(choices)!r}"
+            )
+        defaults[destination] = value
+
+    parser.set_defaults(**defaults)
+    return path
+
+
+def resolve_external_mgeo_dir(value: str | None) -> Path:
+    if not value:
+        raise ValueError(
+            "--mgeo-dir is required. Supply an authorized external MGeo "
+            "directory containing link_set.json."
+        )
+    path = Path(value).expanduser().resolve(strict=False)
+    nested = path / "MGeo"
+    if not (path / "link_set.json").is_file() and (nested / "link_set.json").is_file():
+        path = nested
+    if not path.is_dir() or not (path / "link_set.json").is_file():
+        raise ValueError(
+            "Invalid --mgeo-dir: expected a directory containing link_set.json, "
+            f"got {path}"
+        )
+    return path
 
 
 def _set_if_default(args: argparse.Namespace, parser: argparse.ArgumentParser, name: str, value) -> None:
@@ -388,7 +470,16 @@ def normalize_runtime_modes(
 
 def parse_runtime_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = build_parser()
-    args = parser.parse_args(argv)
+    values = sys.argv[1:] if argv is None else argv
+    config_probe = argparse.ArgumentParser(add_help=False)
+    config_probe.add_argument("--config")
+    config_args, _ = config_probe.parse_known_args(values)
+    if config_args.config:
+        try:
+            apply_json_config_defaults(parser, config_args.config)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            parser.error(str(exc))
+    args = parser.parse_args(values)
     apply_run_preset(args, parser)
     normalize_runtime_modes(
         args,
@@ -444,7 +535,7 @@ def build_runtime_settings(args: argparse.Namespace, scenario) -> RuntimeSetting
         tx_port = args.tx_port or binding.ctrl_port
         control_hz = binding.control_hz
         target_speed = args.target_speed if args.target_speed is not None else scenario.target_speed
-        map_dir = scenario.map_dir
+        map_dir = Path(args.mgeo_dir).expanduser().resolve(strict=False)
         actor_metadata = scenario.actor_metadata
     else:
         ego_id = args.ego_id or DEFAULT_ATTACH_EGO_CANDIDATES[0]
@@ -1985,6 +2076,8 @@ def main(argv: list[str] | None = None) -> int:
         "selected_modes: "
         f"execution_mode={args.execution_mode} control_mode={args.control_mode}"
     )
+    if args.config:
+        print(f"config={Path(args.config).expanduser().resolve(strict=False)}")
     print("No --xosc provided; skipping scenario preparation.")
     if args.source is None:
         print("No --suite provided; attaching to already active simulator state.")
@@ -2006,7 +2099,16 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     try:
-        scenario = load_scenario(args.source, args.scenario_name) if args.source is not None else None
+        args.mgeo_dir = str(resolve_external_mgeo_dir(args.mgeo_dir))
+        scenario = (
+            load_scenario(
+                args.source,
+                args.scenario_name,
+                mgeo_dir=args.mgeo_dir,
+            )
+            if args.source is not None
+            else None
+        )
         settings = build_runtime_settings(args, scenario)
     except (OSError, RuntimeError, ValueError) as exc:
         print(f"ERROR: {exc}")
@@ -2183,8 +2285,8 @@ def main(argv: list[str] | None = None) -> int:
         )
     except (OSError, RuntimeError, ValueError) as exc:
         print(
-            "ERROR: Route context unavailable. Provide --suite or configure "
-            f"MGeo fallback route. detail={exc}"
+            "ERROR: Route context unavailable. Provide an authorized external "
+            f"MGeo directory with --mgeo-dir. detail={exc}"
         )
         return 2
 

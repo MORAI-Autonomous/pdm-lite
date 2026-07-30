@@ -9,3 +9,5 @@ htmlcov/
 venv/
 .env
 .env.*
+data/morai/mgeo/
+configs/*.local.json

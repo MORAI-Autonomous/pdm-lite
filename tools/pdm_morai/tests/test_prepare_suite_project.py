@@ -213,11 +213,21 @@ class PreparedProjectTest(unittest.TestCase):
                 ),
                 encoding="utf-8",
             )
+            mgeo_dir = root / "external-mgeo"
+            mgeo_dir.mkdir()
+            (mgeo_dir / "link_set.json").write_text("[]", encoding="utf-8")
 
-            info = parse_xosc(xosc, None, root / "generated")
+            info = parse_xosc(
+                xosc,
+                None,
+                root / "generated",
+                mgeo_dir=mgeo_dir,
+            )
             project = build_project(info)
             scenario = project["scenarioList"][0]
 
+            self.assertEqual(info.mgeo_dir, mgeo_dir.resolve())
+            self.assertNotIn("MGeo data is not bundled. Provide --mgeo-dir.", info.blocking_errors)
             self.assertNotIn("kineticsModelList", project)
             self.assertEqual(
                 scenario["config"]["kineticsModelList"][0],

@@ -133,7 +133,7 @@ GUI, coverage runner 또는 다른 프로세스가 suite load와 Scenario Play�
 이 모드는 suite를 생성하거나 load하지 않고, Scenario Play도 보내지 않는다.
 기본 UDP 포트는 Vehicle Info `9097`, Manual Control `9091`이며 Ego는 `Ego`,
 그다음 `Car_1` 순서로 찾는다. 첫 Ego UDP pose를 받은 뒤
-`data/morai/mgeo/KATRI`에서 nearest-link route를 생성한다.
+`--mgeo-dir`로 지정한 외부 MGeo에서 nearest-link route를 생성한다.
 
 다른 설정이 필요하면 다음 옵션을 명시한다.
 
@@ -143,7 +143,7 @@ GUI, coverage runner 또는 다른 프로세스가 suite load와 Scenario Play�
   --rx-port 9097 `
   --tx-port 9091 `
   --target-speed 10 `
-  --mgeo-dir "data\morai\mgeo\KATRI" `
+  --mgeo-dir "C:\MORAI_DATA\MGeo\KATRI" `
   --status-hz 5
 ```
 
