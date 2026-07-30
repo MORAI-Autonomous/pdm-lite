@@ -18,6 +18,15 @@ import numpy as np
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 TOOLS_DIR = ROOT_DIR / "tools"
+DEFAULT_CONFIG_PATH = ROOT_DIR / "configs" / "pdm_morai.local.json"
+DEFAULT_CONFIG_VALUES = {
+    "execution_mode": "gui",
+    "control_mode": "variable-udp",
+    "mgeo_dir": "data/morai/mgeo/KATRI",
+    "tcp_port": 20000,
+    "pdm_profile": "normal",
+    "scenario_play": True,
+}
 for path in (ROOT_DIR, TOOLS_DIR):
     if str(path) not in sys.path:
         sys.path.insert(0, str(path))
@@ -85,10 +94,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--config",
+        nargs="?",
+        const=str(DEFAULT_CONFIG_PATH),
         default=None,
         help=(
-            "JSON file containing argument defaults. Command-line arguments "
-            "override values from this file."
+            "JSON file containing argument defaults. When PATH is omitted, "
+            "use configs/pdm_morai.local.json and create it with built-in "
+            "defaults on first use. Command-line arguments override its values."
         ),
     )
     parser.add_argument(
@@ -379,6 +391,21 @@ def apply_json_config_defaults(
     return path
 
 
+def ensure_default_config(config_path: str) -> Path:
+    path = Path(config_path).expanduser().resolve(strict=False)
+    if path.exists():
+        return path
+    if path != DEFAULT_CONFIG_PATH.resolve(strict=False):
+        return path
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(DEFAULT_CONFIG_VALUES, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    print(f"config_created={path}")
+    return path
+
+
 def resolve_external_mgeo_dir(value: str | None) -> Path:
     if not value:
         raise ValueError(
@@ -472,11 +499,16 @@ def parse_runtime_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = build_parser()
     values = sys.argv[1:] if argv is None else argv
     config_probe = argparse.ArgumentParser(add_help=False)
-    config_probe.add_argument("--config")
+    config_probe.add_argument(
+        "--config",
+        nargs="?",
+        const=str(DEFAULT_CONFIG_PATH),
+    )
     config_args, _ = config_probe.parse_known_args(values)
     if config_args.config:
         try:
-            apply_json_config_defaults(parser, config_args.config)
+            config_path = ensure_default_config(config_args.config)
+            apply_json_config_defaults(parser, str(config_path))
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             parser.error(str(exc))
     args = parser.parse_args(values)

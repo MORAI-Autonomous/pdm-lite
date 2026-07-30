@@ -26,11 +26,12 @@ GUI/headless execution mode is independent from the control mode.
 
 ```powershell
 py -3 -m pip install -r .\requirements-pdm-morai.txt
-Copy-Item .\configs\pdm_morai.example.json .\configs\pdm_morai.local.json
 ```
 
-Edit `configs\pdm_morai.local.json` and set `mgeo_dir` to an authorized MGeo
-directory on the local machine. The directory must contain `link_set.json`.
+Run once with `--config`. The runner creates `configs\pdm_morai.local.json`
+with built-in defaults. The default control mode is `variable-udp`. Edit
+`mgeo_dir` if the authorized MGeo is stored elsewhere; the directory must
+contain `link_set.json`.
 
 Check the runtime and external map:
 
@@ -41,8 +42,16 @@ Check the runtime and external map:
 
 ## Config-based execution
 
-The example config contains the settings normally used for GUI TCP lockstep.
-Run it with one launcher argument:
+Run with `--config` alone to use `configs\pdm_morai.local.json`. On first use,
+the `configs` directory and local file are created automatically from built-in
+defaults. The whole directory is ignored by Git so machine-specific paths can
+be edited safely.
+
+```powershell
+.\tools\run_pdm_morai_control.ps1 --config
+```
+
+An explicit config path is still supported:
 
 ```powershell
 .\tools\run_pdm_morai_control.ps1 `
@@ -50,16 +59,8 @@ Run it with one launcher argument:
 ```
 
 Command-line arguments remain available and override config values. For
-example, the same local config can be used for Variable UDP:
-
-
-```powershell
-.\tools\run_pdm_morai_control.ps1 `
-  --config ".\configs\pdm_morai.local.json" `
-  --control-mode variable-udp
-```
-
-Fixed time with a SIM-owned clock:
+example, switch from the default `variable-udp` mode to Fixed time with a
+SIM-owned clock:
 
 ```powershell
 .\tools\run_pdm_morai_control.ps1 `

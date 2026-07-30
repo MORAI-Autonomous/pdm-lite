@@ -50,17 +50,16 @@ Reproduce with `tools/benchmark_mgeo_route.py`.
 ## Runtime configuration
 
 - Added `--config <json>` to the existing PowerShell launcher path.
-- Added `configs/pdm_morai.example.json` with the commonly used GUI TCP
-  lockstep settings.
+- Added first-run generation of `configs/pdm_morai.local.json` from built-in
+  defaults; the entire `configs` directory is excluded from Git.
 - Command-line values override JSON config values, preserving one-off testing.
 - `mgeo_dir` remains an explicit local-machine value in the config.
 
 Typical run:
 
 ```powershell
-Copy-Item .\configs\pdm_morai.example.json .\configs\pdm_morai.local.json
-# Edit mgeo_dir in pdm_morai.local.json.
-.\tools\run_pdm_morai_control.ps1 --config .\configs\pdm_morai.local.json
+.\tools\run_pdm_morai_control.ps1 --config
+# Edit mgeo_dir in configs\pdm_morai.local.json if needed.
 ```
 
 ## Verification
