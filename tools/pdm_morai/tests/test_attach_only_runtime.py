@@ -4,7 +4,10 @@ from __future__ import annotations
 
 import contextlib
 import io
+import json
+import tempfile
 import unittest
+from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
@@ -12,7 +15,6 @@ import numpy as np
 
 from tools.pdm_morai_control import (
     ActiveScenarioChanged,
-    DEFAULT_ATTACH_MGEO_DIR,
     ScenarioBoundaryDetected,
     bootstrap_fixed_tcp_ego,
     build_parser,
@@ -27,6 +29,7 @@ from tools.pdm_morai_control import (
     parse_runtime_args,
     rebuild_route_from_runtime_pose,
     resolve_runtime_ego,
+    resolve_external_mgeo_dir,
     resolve_sut_timing,
     send_ego_control,
     select_runtime_mode,
@@ -67,6 +70,7 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         self.assertFalse(args.scenario_stop)
         self.assertEqual(args.pdm_profile, "normal")
         self.assertEqual(args.scenario_transition_wait, 3.0)
+        self.assertIsNone(args.mgeo_dir)
         self.assertEqual(select_runtime_mode(args), "gui:variable-udp")
 
     def test_pdm_profiles_patch_behavior_parameters(self) -> None:
@@ -93,7 +97,8 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         self.assertGreater(pdm_profile_target_speed_scale("idiot"), 1.0)
 
     def test_attach_only_uses_runtime_defaults(self) -> None:
-        args = build_parser().parse_args([])
+        mgeo_dir = Path.cwd() / "external-mgeo"
+        args = build_parser().parse_args(["--mgeo-dir", str(mgeo_dir)])
 
         settings = build_runtime_settings(args, scenario=None)
 
@@ -104,10 +109,12 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         self.assertEqual(settings.tx_port, 9091)
         self.assertEqual(settings.control_hz, 60)
         self.assertEqual(settings.target_speed, 10.0)
-        self.assertEqual(settings.map_dir, DEFAULT_ATTACH_MGEO_DIR.resolve())
+        self.assertEqual(settings.map_dir, mgeo_dir.resolve())
 
     def test_explicit_ego_disables_candidate_fallback(self) -> None:
-        args = build_parser().parse_args(["--ego-id", "HostVehicle"])
+        args = build_parser().parse_args(
+            ["--ego-id", "HostVehicle", "--mgeo-dir", "external-mgeo"]
+        )
 
         settings = build_runtime_settings(args, scenario=None)
 
@@ -175,7 +182,15 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         self.assertEqual(lockstep.fixed_control_transport, "tcp")
 
     def test_suite_metadata_keeps_car_1_fallback(self) -> None:
-        args = build_parser().parse_args(["--suite", "test.msuite"])
+        external_mgeo = Path.cwd() / "external-mgeo"
+        args = build_parser().parse_args(
+            [
+                "--suite",
+                "test.msuite",
+                "--mgeo-dir",
+                str(external_mgeo),
+            ]
+        )
         binding = SimpleNamespace(
             ego_id="Ego",
             entity_ids=["Ego"],
@@ -188,13 +203,54 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         scenario = SimpleNamespace(
             binding=binding,
             target_speed=10.0,
-            map_dir=DEFAULT_ATTACH_MGEO_DIR,
+            map_dir=Path.cwd() / "suite-mgeo",
             actor_metadata={},
         )
 
         settings = build_runtime_settings(args, scenario)
 
         self.assertEqual(settings.ego_candidates, ("Ego", "Car_1"))
+        self.assertEqual(settings.map_dir, external_mgeo.resolve())
+
+    def test_json_config_supplies_defaults_and_cli_overrides(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            config_path = Path(directory) / "pdm.json"
+            config_path.write_text(
+                json.dumps(
+                    {
+                        "execution_mode": "headless",
+                        "control_mode": "fixed-tcp-lockstep",
+                        "mgeo_dir": "external-mgeo",
+                        "tcp_port": 20000,
+                        "save_data_each_step": True,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            args = parse_runtime_args(
+                [
+                    "--config",
+                    str(config_path),
+                    "--execution-mode",
+                    "gui",
+                ]
+            )
+
+        self.assertEqual(args.execution_mode, "gui")
+        self.assertEqual(args.control_mode, "fixed-tcp-lockstep")
+        self.assertEqual(args.tcp_port, 20000)
+        self.assertTrue(args.save_data_each_step)
+
+    def test_external_mgeo_directory_requires_link_set(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            mgeo_dir = Path(directory)
+            with self.assertRaisesRegex(ValueError, "link_set.json"):
+                resolve_external_mgeo_dir(str(mgeo_dir))
+            (mgeo_dir / "link_set.json").write_text("[]", encoding="utf-8")
+            self.assertEqual(
+                resolve_external_mgeo_dir(str(mgeo_dir)).resolve(),
+                mgeo_dir.resolve(),
+            )
 
     def test_runtime_ego_falls_back_to_car_1(self) -> None:
         car_1 = SimpleNamespace(id="Car_1")
@@ -693,6 +749,7 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
 
         self.assertTrue(result)
 
+    @patch("tools.pdm_morai_control.resolve_external_mgeo_dir", return_value=Path.cwd())
     @patch("tools.pdm_morai_control.stop_before_start")
     @patch("tools.pdm_morai_control.wait_for_udp_ready")
     @patch("tools.pdm_morai_control.MGeoRoutePlanner")
@@ -705,6 +762,7 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         _route_class: Mock,
         wait_udp_mock: Mock,
         stop_mock: Mock,
+        _resolve_mgeo_mock: Mock,
     ) -> None:
         tcp = tcp_class.return_value
         tcp.active_suite_status.return_value = {
@@ -764,6 +822,7 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
 
         self.assertTrue(should_stop_before_start(args))
 
+    @patch("tools.pdm_morai_control.resolve_external_mgeo_dir", return_value=Path.cwd())
     @patch("tools.pdm_morai_control.wait_for_udp_ready")
     @patch("tools.pdm_morai_control.MGeoRoutePlanner")
     @patch("tools.pdm_morai_control.MoraiUdpClient")
@@ -774,6 +833,7 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         udp_class: Mock,
         route_class: Mock,
         wait_udp_mock: Mock,
+        _resolve_mgeo_mock: Mock,
     ) -> None:
         tcp = tcp_class.return_value
         tcp.active_suite_status.return_value = {
@@ -811,6 +871,7 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         tcp.scenario_control.assert_not_called()
         self.assertTrue(wait_udp_mock.call_args[1]["require_stamp_advance"])
 
+    @patch("tools.pdm_morai_control.resolve_external_mgeo_dir", return_value=Path.cwd())
     @patch("tools.pdm_morai_control.wait_for_udp_ready")
     @patch("tools.pdm_morai_control.MGeoRoutePlanner")
     @patch("tools.pdm_morai_control.MoraiUdpClient")
@@ -821,6 +882,7 @@ class AttachOnlyRuntimeTest(unittest.TestCase):
         udp_class: Mock,
         _route_class: Mock,
         wait_udp_mock: Mock,
+        _resolve_mgeo_mock: Mock,
     ) -> None:
         tcp = tcp_class.return_value
         tcp.get_simulation_time_status.return_value = {
